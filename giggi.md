@@ -24,7 +24,7 @@ Core principle:
 * Create / browse gigs
 * Messaging system
 * Agreement system (core trust layer)
-* Review system (double-sided)
+* Review system (double-sided, **double-blind in MVP as an experiment** — see §5.F)
 * Basic AI:
 
   * Search recommendation
@@ -123,6 +123,7 @@ Core principle:
 * quality_score
 * comment
 * created_at
+* **MVP experiment fields (conceptual):** visibility to counterparty until **reveal**; **updated_at** while **editable until reveal**; **revealed_at**; **reveal_reason** (e.g. mutual | timeout); config for **timeout duration** (default **7 days**)
 
 ---
 
@@ -262,7 +263,9 @@ Each gig includes:
   * location
   * urgency
   * category
-* Optional map view
+* **MVP:** **No map view** for browsing the catalogue, homepage, or feed — discovery is **list + search + filters** (location still drives ranking and text/structured location).
+* **Optional MVP slice:** On **gig detail** only, an **OpenStreetMap**-based map (e.g. Leaflet or MapLibre) may show **that gig’s** location. There is **no** “all gigs on a map” experience in MVP.
+* **Phase B / later:** Broader map experiences (e.g. map + list for discovery) can be added if metrics justify it.
 
 ---
 
@@ -305,10 +308,26 @@ After job:
 
 ---
 
-### F. Review Flow (Double-Blind)
+### F. Review Flow (Double-Blind — MVP experiment)
 
-* Both submit review independently
-* Reviews revealed only after both submitted OR timeout
+Double-blind reviews ship **early in MVP** as a **deliberate experiment**, not as a final, frozen policy. Implementation should use **feature flags / config** so timeouts and rules can change as we learn.
+
+**MVP behavior**
+
+* After an agreement is **eligible for review** (per completion rules), each party may **submit** a review; the **counterparty cannot see** the other’s review text or ratings until **reveal**.
+* **Immediate reveal** when **both** parties have submitted.
+* **Auto-reveal after 7 days** if both reviews are not yet in (timeout path); define the **start of the 7-day window** in implementation (e.g. from agreement completion or from first submission) and document it consistently.
+* Reviews remain **editable by the author until reveal**; after reveal, they are **locked** (except any future admin/dispute tooling in later phases).
+
+**Evaluation metrics (instrument from day one)**
+
+* % of users who **submit** a review (of those eligible)
+* % of **one-sided** reviews (only one party submitted before reveal)
+* **Time to second review** (latency between first and second submission, when both exist)
+* % of reveals due to **mutual submit** vs **timeout**
+* **Rating variance / distribution** comparing **mutual-reveal** vs **timeout-reveal** cohorts (and optionally vs a future control if A/B tests are added)
+
+Use these metrics to decide whether to keep, tune, or simplify double-blind post-MVP.
 
 ---
 
@@ -716,6 +735,7 @@ To prevent imbalance:
 
   * search via search bar
   * apply filters (category, location, urgency)
+* **No map-based discovery** in MVP (see §5.B); optional **single-gig** map on detail only.
 
 ---
 
@@ -725,6 +745,7 @@ To prevent imbalance:
 * AI-assisted ranking
 * dynamic section ordering
 * smart resurfacing of relevant gigs
+* **Map + list** discovery (many gigs on a map) if product data supports it
 
 ---
 
