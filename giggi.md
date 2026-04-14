@@ -79,7 +79,7 @@ Core principle:
 * compensation_type (FIXED | HOURLY | NEGOTIABLE)
 * compensation_amount
 * effort_level (QUICK | NORMAL | HEAVY)
-* urgency (NOW | TODAY | WEEK | FLEXIBLE)
+* urgency (NOW | TODAY | WEEK | FLEXIBLE) — see **[Urgency and intent modifiers (alignment)](#urgency-and-intent-modifiers-alignment)** for mapping to feed/posting intent
 * expires_at
 * created_by
 
@@ -235,6 +235,30 @@ Each gig includes:
 ** Full day
 * location: ONSITE / REMOTE / WORKER_PLACE
 
+### Urgency and intent modifiers (alignment)
+
+The **Gig** entity stores `urgency` as **`NOW` | `TODAY` | `WEEK` | `FLEXIBLE`**. **[Intent Modifiers](#intent-modifiers-core-differentiator)** describe user-facing concepts (**ASAP**, **SCHEDULED**, **RECURRING**, **FLEXIBLE**). Feeds, chips, and posting must **not** invent divergent third enums — follow the tables below until the schema adds explicit fields for scheduled and recurring gigs.
+
+**Storage target (modifier → persisted shape)**
+
+| Intent modifier (UX / chips) | Persisted as (contract) |
+| --- | --- |
+| **ASAP** | `urgency = NOW` |
+| **SCHEDULED** | `urgency` value TBD when a gig-level **scheduled time** (or equivalent) exists on Gig — extend §3 Gig with fields when implemented |
+| **RECURRING** | Recurrence fields on Gig (to add to §3), or extended enum — document when implemented |
+| **FLEXIBLE** | `urgency = FLEXIBLE` |
+
+**Display default (`Gig.urgency` → chip copy; localize)**
+
+| `Gig.urgency` | Default chip / label |
+| --- | --- |
+| `NOW` | ASAP |
+| `TODAY` | Today |
+| `WEEK` | This week |
+| `FLEXIBLE` | Flexible |
+
+If product later decides **`TODAY` shares the ASAP chip** with `NOW`, state that explicitly here and in UI specs so chips stay consistent.
+
 ---
 
 ## 5. User Flow
@@ -266,6 +290,14 @@ Each gig includes:
 * **MVP:** **No map view** for browsing the catalogue, homepage, or feed — discovery is **list + search + filters** (location still drives ranking and text/structured location).
 * **Optional MVP slice:** On **gig detail** only, an **OpenStreetMap**-based map (e.g. Leaflet or MapLibre) may show **that gig’s** location. There is **no** “all gigs on a map” experience in MVP.
 * **Phase B / later:** Broader map experiences (e.g. map + list for discovery) can be added if metrics justify it.
+
+### Location mode and match breadth (ranking)
+
+Discovery and ranking use this mental model (the **gig card** only reflects each gig’s own `location_type` and location data — it does not imply match quality):
+
+* **Remote** → broad match
+* **At worker’s place** → stronger than distant on-site
+* **Nearby on-site** → strongest match
 
 ---
 

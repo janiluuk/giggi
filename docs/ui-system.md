@@ -9,6 +9,8 @@ Define a **simple, consistent UI** that:
 * works for both Gen Z and older users
 * stays fast and low-friction
 
+**Implementation detail** (tokens, per-component specs, style-book index): [`ui/README.md`](ui/README.md).
+
 ---
 
 ## 2. Core Principle
