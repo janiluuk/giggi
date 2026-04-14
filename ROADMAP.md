@@ -34,7 +34,7 @@ Answer these when you can; steps that depend on them are marked **(DECISION)**.
 2. **Hosting:** managed cloud (e.g. Fly, Railway, AWS) vs self-hosted — affects CI, secrets, and ops steps.
 3. **Phone verification (Finland):** SMS/WhatsApp provider and budget (Twilio, Vonage, local FI provider, etc.).
 4. **OAuth:** Google-only for social auth, or additional providers from day one?
-5. **Maps (resolved for MVP):** No **browse / homepage / discovery map** of gigs in MVP — **list + search + filters** only. Optional **single-gig detail** map only: **OpenStreetMap** stack (Leaflet or MapLibre). Provider choice for **later** browse maps (if any) is non-blocking.
+5. **Maps (resolved for MVP):** No **browse / homepage / discovery map** of gigs in MVP — **list + search + filters** only. Location based search and ranking is core. Optional **single-gig detail** map only: **OpenStreetMap** stack (Leaflet or MapLibre). Provider choice for **later** browse maps (if any) is non-blocking.
 6. **AI default provider:** OpenAI vs Anthropic vs local — env-driven abstraction is planned; pick first provider for dev/staging.
 7. **Premium / templates / monetisation:** [`giggi.md`](giggi.md) describes templates and premium limits; **MVP “Included”** does not list payments or premium. Confirm: **exclude** paid tiers and template limits from Phase A, or **include** schema + UI stubs only.
 8. **Disputes in MVP:** Entity exists; full dispute workflow may be minimal. Confirm: **PENDING/COMPLETED/CANCELLED only** first, or **full DISPUTED path** with admin tooling.
