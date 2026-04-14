@@ -651,8 +651,8 @@ The homepage is divided into sections:
 
 #### ⚡ Urgent Now
 
-* Shows gigs with urgency = ASAP
-* Includes gigs expiring soon
+* Shows **ASAP-equivalent** gigs (see **[Urgency and intent modifiers (alignment)](#urgency-and-intent-modifiers-alignment)** — e.g. `urgency = NOW` on Gig until schema extends)
+* Includes gigs **expiring soon** (per expiration rules)
 * Limited to a small number of items (e.g. 5–10)
 * Sorted by:
 
@@ -665,7 +665,7 @@ The homepage is divided into sections:
 
 * Main feed
 * Mix of all urgency types
-* Sorted by blended ranking score:
+* Sorted by **blended ranking score** for **this section only** (see **Per-section scoring** and **Ranking blend (Nearby & Relevant)** below):
 
   * proximity (primary)
   * freshness
@@ -684,27 +684,58 @@ The homepage is divided into sections:
 
 #### 🔁 Flexible & Recurring
 
-* Gigs with:
-
-  * urgency = FLEXIBLE
-  * urgency = RECURRING
-* Longer-term opportunities
-* Lower time sensitivity
+* Longer-term opportunities; **lower time sensitivity** than the Urgent strip.
+* **Flexible:** `urgency = FLEXIBLE` on Gig (see §3 Gig and **[alignment](#urgency-and-intent-modifiers-alignment)**).
+* **Recurring:** use **[Intent Modifiers](#intent-modifiers-core-differentiator)** concept **RECURRING** — persist with **recurrence fields on Gig** (or extended `urgency` / enums) when added to §3; **do not** treat `urgency = RECURRING` as a Gig enum value until the schema explicitly defines it.
 
 ---
 
-### Ranking Algorithm (Simplified)
+### Per-section scoring
 
-Each gig is assigned a score:
+**MVP contract:** each homepage **section** uses its **own** simplified score or sort — **not** one global formula for every row. The UI composes sections in product order; **each section’s ranker** only uses the signals that matter for that strip.
+
+| Section | Ranking intent (simplified) |
+| --- | --- |
+| **Urgent Now** | Small cap; **time remaining** primary, **proximity** secondary; eligibility = ASAP-equivalent + expires-soon rules. |
+| **Nearby & Relevant** | Full **weighted blend** (formula below); proximity-heavy. |
+| **New Gigs** | **`created_at` descending**; optional weak tie-breakers only. |
+| **Flexible & Recurring** | **Filter** by eligibility (flexible + recurring per schema when ready); **mild** ordering (e.g. proximity or recency) — not the same blend as Nearby unless product explicitly reuses it. |
+
+---
+
+### Ranking blend (Nearby & Relevant)
+
+For the **main** section, each eligible gig gets a **section-local** score from normalized factors:
 
 ```ts
-score =
+nearby_relevant_score =
   (urgency_weight * urgency_score) +
   (proximity_weight * distance_score) +
   (freshness_weight * recency_score) +
   (engagement_weight * interaction_score) +
   (relevance_weight * user_preference_score)
 ```
+
+Other sections use **subsets** of these factors or **pure sorts** as in the table above.
+
+---
+
+### Score normalization and weights
+
+* Map each raw signal to a **comparable subscore** (e.g. **0–1**): distance → `distance_score`, age → `recency_score`, etc., so weights are interpretable.
+* **`_*_weight`** values are **tunable** (config / feature flags); record **defaults** when the ranker ships. If a section **drops** a term (e.g. New Gigs has no engagement), **renormalize** weights for that section so total influence stays intentional.
+
+---
+
+### Cold start (zero or unknown engagement)
+
+When **interaction** data is missing or near-zero for a gig (new post, new user, or sparse telemetry):
+
+* **Recommended for MVP — term dropping + renormalization:** for **Nearby & Relevant**, treat engagement as **unknown** for that gig: **omit** the engagement term from the blend and **redistribute** its weight across **proximity**, **freshness**, and **relevance** (and light urgency) so `engagement_weight * 0` does **not** bury new listings.
+
+* **Alternative — neutral prior:** instead of omitting, map unknown engagement to a **mid prior** (e.g. **0.4–0.5** on a 0–1 scale) and replace it with real `interaction_score` as impressions and actions accrue; tune the prior down as data density increases.
+
+* **Instrumentation:** log **impressions**, **taps**, and **messages** with **feed position** so cold start can be measured and the chosen rule validated.
 
 ---
 

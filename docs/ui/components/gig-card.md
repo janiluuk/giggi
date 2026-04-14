@@ -28,6 +28,10 @@ Optional body snippet (description — truncated; see Truncation)
 Footer: actions
 ```
 
+### Feed context
+
+In a **[feed list](feed-list.md)** layout, the gig row has **no** elevated surface (no shadow, no rounded “card” panel). **Visual separation between gigs** (e.g. bottom hairline) is owned by the **list**, not by this component, so the same card content can be reused in other contexts without assuming feed chrome.
+
 ## Chips (always + conditional)
 
 * **Multiple chips** may appear together when each applies (e.g. `ASAP` + `Expires soon` + `Deep cleaning`), reflecting **different dimensions** (time intent, freshness, category, monetisation surface, etc.).
