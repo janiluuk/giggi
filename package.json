@@ -1,0 +1,25 @@
+{
+  "name": "giggi",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "build": "pnpm --filter @giggi/web build",
+    "dev": "pnpm --filter @giggi/web dev",
+    "lint": "pnpm -r lint",
+    "db:generate": "pnpm --filter @giggi/db db:generate",
+    "test": "pnpm run test:unit",
+    "test:e2e": "playwright test",
+    "test:unit": "vitest run",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.54.1",
+    "@types/node": "^22.15.3",
+    "eslint": "^9.25.1",
+    "eslint-config-next": "^15.3.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.46.3",
+    "vitest": "^3.1.2"
+  }
+}

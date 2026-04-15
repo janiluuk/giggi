@@ -20,9 +20,9 @@ This folder holds **implementable** UI detail: tokens, per-component requirement
 
 | Component | Spec status | Living book (stories) |
 | --- | --- | --- |
-| [Gig card](components/gig-card.md) | Draft | Not wired — stack TBD |
-| [Feed list](components/feed-list.md) | Draft | Not wired — stack TBD |
-| [Home](screens/home.md) | Draft | Not wired — stack TBD |
+| [Gig card](components/gig-card.md) | Implemented | Wired in `apps/web` |
+| [Feed list](components/feed-list.md) | Implemented | Wired in `apps/web` |
+| [Home](screens/home.md) | Implemented | Wired in `apps/web` |
 
 Update the **Spec status** column as specs stabilize (`Draft` → `Agreed` → `Implemented` when code exists).
 
@@ -33,9 +33,9 @@ One row per **surface or component**; spec is the source of truth. Platform colu
 | Surface / component | Spec | Web | iOS | Android | Notes |
 | --- | --- | --- | --- | --- | --- |
 | [Tokens](tokens.md) | Draft | — | — | — | Map tokens per platform (CSS, Swift, Kotlin, …). |
-| [Gig card](components/gig-card.md) | Draft | — | — | — | |
-| [Feed list](components/feed-list.md) | Draft | — | — | — | |
-| [Home (shell + feed)](screens/home.md) | Draft | — | — | — | App bar (logo, search, create, inbox, avatar); **fixed left nav** / **mobile secondary menu** (location, Home reset, offers, saved searches, categories + starred); **mobile bottom tabs**; feed + **sort strip** (Best / Popular / Latest / Urgent) + scroll refresh; optional **right rail**. Ranking: [`giggi.md` §19](../giggi.md#giggi-19) + [feed list](components/feed-list.md). |
+| [Gig card](components/gig-card.md) | Implemented | Shipped | — | — | Initial web slice lives in `apps/web`; native still pending. |
+| [Feed list](components/feed-list.md) | Implemented | Shipped | — | — | Initial web slice lives in `apps/web`; native still pending. |
+| [Home (shell + feed)](screens/home.md) | Implemented | Shipped | — | — | App bar (logo, search, create, inbox, avatar); **fixed left nav** / **mobile secondary menu** (location, Home reset, offers, saved searches, categories + starred); **mobile bottom tabs**; feed + **sort strip** (Best / Popular / Latest / Urgent) + scroll refresh; optional **right rail**. Ranking: [`giggi.md` §19](../giggi.md#giggi-19) + [feed list](components/feed-list.md). |
 | Gig detail | *TBD* | — | — | — | |
 | Search (results list) | *TBD* | — | — | — | Reuses feed list + card; ranking differs per `feed-list.md`. |
 

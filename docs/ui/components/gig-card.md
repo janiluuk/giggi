@@ -1,6 +1,6 @@
 # Gig card
 
-**Status:** Draft
+**Status:** Implemented
 
 **Related:** [`ui-system.md`](../../ui-system.md) §4–5, §8, §14–16; [`tokens.md`](../tokens.md); [`giggi.md` §3 Gig](../../giggi.md#giggi-3-gig), [§5.B](../../giggi.md#giggi-5-b) (discovery), [§8](../../giggi.md#giggi-8) (identity / [premium](../../giggi.md#giggi-8-premium))
 

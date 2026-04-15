@@ -1,0 +1,73 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      deploy_ref:
+        description: Git ref to deploy
+        required: false
+        default: main
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: ${{ secrets.CLUSTER_DEPLOY_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.CLUSTER_DEPLOY_SSH_KEY }}
+
+      - name: Add cluster host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H "${{ secrets.CLUSTER_DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy to self-hosted cluster
+        env:
+          DEPLOY_COMMAND: ${{ secrets.CLUSTER_DEPLOY_COMMAND }}
+          DEPLOY_HOST: ${{ secrets.CLUSTER_DEPLOY_HOST }}
+          DEPLOY_PATH: ${{ secrets.CLUSTER_DEPLOY_PATH }}
+          DEPLOY_REF: ${{ github.event.inputs.deploy_ref || github.sha }}
+          DEPLOY_USER: ${{ secrets.CLUSTER_DEPLOY_USER }}
+        run: |
+          if [ -n "${DEPLOY_COMMAND}" ]; then
+            REMOTE_COMMAND="cd '${DEPLOY_PATH}' && export GIT_REF='${DEPLOY_REF}' && ${DEPLOY_COMMAND}"
+          else
+            REMOTE_COMMAND="cd '${DEPLOY_PATH}' && git fetch --all && git checkout '${DEPLOY_REF}' && pnpm install --frozen-lockfile && pnpm build"
+          fi
+
+          ssh "${DEPLOY_USER}@${DEPLOY_HOST}" "${REMOTE_COMMAND}"
+
+      - name: Health check
+        if: ${{ secrets.CLUSTER_HEALTHCHECK_URL != '' }}
+        env:
+          HEALTHCHECK_URL: ${{ secrets.CLUSTER_HEALTHCHECK_URL }}
+        run: |
+          curl --fail --silent --show-error --retry 10 --retry-delay 5 "${HEALTHCHECK_URL}"
+
+      - name: Roll back on failure
+        if: ${{ failure() }}
+        env:
+          DEPLOY_HOST: ${{ secrets.CLUSTER_DEPLOY_HOST }}
+          DEPLOY_PATH: ${{ secrets.CLUSTER_DEPLOY_PATH }}
+          ROLLBACK_COMMAND: ${{ secrets.CLUSTER_ROLLBACK_COMMAND }}
+          DEPLOY_USER: ${{ secrets.CLUSTER_DEPLOY_USER }}
+        run: |
+          if [ -n "${ROLLBACK_COMMAND}" ]; then
+            REMOTE_COMMAND="cd '${DEPLOY_PATH}' && ${ROLLBACK_COMMAND}"
+          else
+            REMOTE_COMMAND="cd '${DEPLOY_PATH}' && git checkout -"
+          fi
+
+          ssh "${DEPLOY_USER}@${DEPLOY_HOST}" "${REMOTE_COMMAND}"

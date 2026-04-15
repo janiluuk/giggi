@@ -1,6 +1,6 @@
 # Feed list
 
-**Status:** Draft  
+**Status:** Implemented  
 **Related:** [`ui-system.md`](../../ui-system.md) §4, §12, §16; [Gig card](gig-card.md); [`../tokens.md`](../tokens.md); [`../screens/home.md`](../screens/home.md) (Home uses this list); [`giggi.md` §5.B](../../giggi.md#giggi-5-b) (discovery), [§19](../../giggi.md#giggi-19) (Home ranking)
 
 ## Purpose
