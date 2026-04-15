@@ -2,11 +2,14 @@
 
 This document breaks [`giggi.md`](giggi.md) into **phases** and **executable steps**. It is the source of truth for implementation order and status.
 
+**Companion docs:** [User journeys](docs/journeys/README.md) · [System rules](docs/system-rules.md) (soft disputes, payment fields, messaging concurrency, pointers to trust/ranking) · [Personas](docs/personas/README.md) (worker / client, contextual roles).
+
 ## Product Principles (Guiding Implementation)
 
 - Mobile-first UX, web-first implementation (PWA)
 - AI-assisted flows are core, not optional
-- Locality (distance, neighbourhood) is a primary ranking signal
+- **Ranking & relevance (MVP):** ordering uses **weighted interest scores** that depend on **context** (gig feed vs gig search vs worker search vs profile lists) — [`giggi.md` §19](giggi.md) (*MVP weighted interest score*). **Gig discovery feed:** **location** has the **largest default weight** but is **one of several** signals (urgency, freshness, category, trust; engagement in *Nearby & Relevant* per §19). **Trust** for ranking comes from the **§7.1 composite** (reviews + completion + behaviour), not stars alone — UI still shows honest **average stars + count** plus qualitative chips (§7.1).
+- **Roles in product:** **Worker** / **client** are **agreement-context** labels in docs and schema — not permanent profile types; UI favours **names** and natural copy ([`giggi.md` §1.2](giggi.md)).
 - Simplicity over infrastructure complexity in MVP
 - Design for future real-time, but start with pragmatic implementations
 
@@ -39,6 +42,7 @@ Answer these when you can; steps that depend on them are marked **(DECISION)**.
 7. **Premium / templates / monetisation:** [`giggi.md`](giggi.md) describes templates and premium limits; **MVP “Included”** does not list payments or premium. Confirm: **exclude** paid tiers and template limits from Phase A, or **include** schema + UI stubs only.
 8. **Disputes in MVP:** Entity exists; full dispute workflow may be minimal. Confirm: **PENDING/COMPLETED/CANCELLED only** first, or **full DISPUTED path** with admin tooling.
 9. **Double-blind review timeout:** **Resolved** — **7-day** auto-reveal; **immediate reveal** when both parties have submitted. Tunable via config for experiments (see Phase 6).
+10. **One-sided feedback visibility:** [Feedback flow](docs/journeys/feedback-flow.md) uses a **3-day** auto-publish path; **reconcile** with §5.F / Phase 6 **7-day** language in **one config surface** before ship.
 
 ---
 
@@ -97,7 +101,7 @@ Maps to [`giggi.md` §18 item 1](giggi.md), entities **User** / **Profile** (§3
 ## Phase 2 — Categories, gigs, expiration
 
 **Status:** `PLANNED`
-Maps to §3 **Gig**, §4 categories & intent modifiers, §9 expiration rules, §19 feed inputs, §20 posting intent.
+Maps to §3 **Gig** (including optional **payment timing / method** hints — [System rules — Payment timing](docs/system-rules.md#payment-timing)), §4 categories & intent modifiers, §9 expiration rules, §19 feed inputs, §20 posting intent.
 
 | Step | Description | Status |
 | ---- | ----------- | ------ |
@@ -118,19 +122,14 @@ Maps to §3 **Gig**, §4 categories & intent modifiers, §9 expiration rules, §
 ## Phase 3 — Discovery, search, homepage feed
 
 **Status:** `PLANNED`
-Maps to §5 Discovery, §19 homepage sections & ranking, §20 Find help / Find work.
+Maps to §5 Discovery, **§19** homepage sections & **MVP weighted interest** (default gig-feed blend + search / profile variants), **§7.1** trust as a rank input, §20 Find help / Find work.
 
 | Step | Description | Status |
 | ---- | ----------- | ------ |
 | 3.1 | API: search + filter endpoint(s); pagination. | `PLANNED` |
 | 3.2 | Feed endpoint: context `find_help` vs `find_work` (filter gig type + sections). | `PLANNED` |
 | 3.3 | Implement section queries: **Urgent Now**, **Nearby & Relevant**, **New Gigs**, **Flexible & Recurring** (§19–§20). | `PLANNED` |
-| 3.4 | Blended score function:
-priority weights:
-- proximity (highest)
-- urgency
-- freshness
-- engagement | `PLANNED` |
+| 3.4 | **Blended interest score** per §19: normalise factors to 0–1; **default gig discovery blend** (starting weights, config-tunable): `location 0.30 + urgency 0.25 + freshness 0.20 + category 0.15 + trust 0.10` (+ **engagement** term for *Nearby & Relevant* per §19 ranking blend / cold-start rules). Implement **separate** ranking paths for **gig search**, **worker search**, and **profile / worker lists** per §19 priority tables. **Do not** expose raw scores in UI ([`docs/ui/README.md`](docs/ui/README.md)). | `PLANNED` |
 | 3.5 | Urgent decay (`exp(-time_since_post)` or discrete tiers) and soft quotas (§19). | `PLANNED` |
 | 3.6 | Track lightweight engagement (message count, optional click events) for ranking. | `PLANNED` |
 | 3.7 | Frontend: homepage tabs **Find help** \| **Find work**; sectioned lists; search bar + filters (**no map view** for gigs in MVP — aligns with §5 / Decision #5). | `PLANNED` |
@@ -145,7 +144,7 @@ Maps to §5 Messaging, entity **Message** (§3).
 
 | Step | Description | Status |
 | ---- | ----------- | ------ |
-| 4.1 | Schema: `messages` (gig_id, sender_id, receiver_id, content, created_at); thread by gig + pair. | `PLANNED` |
+| 4.1 | Schema: `messages` (gig_id, sender_id, receiver_id, content, created_at); **threading** must support **many concurrent conversations** per user ([System rules — Messaging concurrency](docs/system-rules.md#messaging-concurrency)) — prefer `conversation_id` (or gig + pair + uniqueness rules) rather than assuming one thread per user pair. | `PLANNED` |
 | 4.2 | API: list messages for a gig (authorization: participants only); send message. | `PLANNED` |
 | 4.3 | Real-time strategy:
 - MVP: polling
@@ -220,12 +219,12 @@ User must confirm all AI outputs. | `PLANNED` |
 ## Phase 8 — Reputation, cancellation, disputes (MVP depth)
 
 **Status:** `PLANNED`
-Maps to §7, §14, §3 **Dispute**.
+Maps to **§7.1** trust composite, §7 metrics, §14, §3 **Dispute**, [soft disputes](docs/system-rules.md#soft-disputes).
 
 | Step | Description | Status |
 | ---- | ----------- | ------ |
-| 8.1 | Track cancellations and no-shows from agreement outcomes. | `PLANNED` |
-| 8.2 | Update user aggregates: cancellation_rate; reliability from reviews/agreements. | `PLANNED` |
+| 8.1 | Track cancellations, no-shows, completion mismatch, and related signals from agreement + completion flows (feeds §7.1 inputs). | `PLANNED` |
+| 8.2 | Compute **§7.1 `trustComposite`** (configurable weights); persist aggregates for **ranking** (§19) and UI (**stars + review count** + qualitative chips only — never expose raw composite formula in UI). | `PLANNED` |
 | 8.3 | Soft penalties: visibility reduction, posting cooldown (rules engine, configurable). | `PLANNED` |
 | 8.4 | Schema + API for **Dispute** minimal path **(DECISION)** vs full workflow. | `PLANNED` |
 
@@ -251,13 +250,12 @@ Maps to §7, §14, §3 **Dispute**.
 
 - Payments / escrow (§2, §16)
 - Advanced moderation AI, AI dispute resolution (§2, §16)
-- Full recommendation engine (§2)
-- Trust scoring algorithm as advanced product (§16)
+- Full **ML** recommendation / learning-to-rank (beyond §19 **hand-tuned** weighted interest + §7.1 trust composite in MVP) (§2, §16)
+- Deep **personalisation** (behavioural profiles beyond current signal set) (§16)
 - Tier 3 ID verification (§8)
 - Premium subscription features (§8) — unless promoted by **Decisions #7**
 - Local LLM deployment (§16)
 - Smart defaulting tab from behavior (§20 future)
-- Homepage AI ranking (§19 future)
 - **Discovery / feed map view** (map + list sync, many gigs on map) — MVP per Decision #5 is list/search/filters only; optional single-gig map is Phase 2 **2.11** only
 
 ---
@@ -282,5 +280,6 @@ Maps to §7, §14, §3 **Dispute**.
 | ---------- | ------------------------- |
 | 2026-04-13 | Initial roadmap from giggi.md |
 | 2026-04-14 | Double-blind MVP experiment (7d timeout, mutual reveal, edit until reveal, metrics); no discovery map MVP, OSM optional on gig detail only; notifications folded into Phase 4 as 4.5–4.7; Decision #5/#9 aligned |
+| 2026-04-15 | Product principles: ranking = context-weighted interest (§19), trust = §7.1 composite (not locality-only). Phase 3.4 / 8.x / 4.1 / Phase B aligned; companion docs + Decision #10 (3d vs 7d feedback); payment hints Phase 2 |
 
 When you approve edits, update this table and phase/step statuses as work completes.
