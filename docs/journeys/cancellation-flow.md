@@ -6,21 +6,21 @@ Either party may cancel while an **agreement is active** and the gig is **not ye
 flowchart TD
     A[Agreement active] --> B{Who cancels?}
 
-    B -->|Employer| C[Employer cancels]
+    B -->|Client| C[Client cancels]
     B -->|Worker| D[Worker cancels]
 
     C --> E{Time before gig?}
     D --> F{Time before gig?}
 
-    E -->|Early| G[Mark: Employer cancelled]
-    E -->|Late| H[Mark: Late employer cancellation]
+    E -->|Early| G[Mark: Client cancelled]
+    E -->|Late| H[Mark: Late client cancellation]
 
     F -->|Early| I[Mark: Worker cancelled]
     F -->|Late| J[Mark: Late worker cancellation]
 
     G --> K[Notify worker]
     H --> K
-    I --> L[Notify employer]
+    I --> L[Notify client]
     J --> L
 
     K --> M[Agreement ends]
@@ -40,7 +40,7 @@ flowchart TD
 
 ## System signals (track separately)
 
-- Employer cancellation rate (and counts)
+- Client cancellation rate (and counts)
 - Worker cancellation rate (and counts)
 - **Late** cancellations (by side), distinct from early
 
@@ -48,4 +48,4 @@ These feed reputation / trust **alongside** completion and review signals, not i
 
 ## Contested cancellation
 
-If employer and worker **disagree** on whether a cancel was valid, who initiated it, or material facts, treat as **soft dispute** handling — [System rules — Soft disputes](../system-rules.md#soft-disputes) (record both sides, no blame assignment in MVP).
+If **client** and worker **disagree** on whether a cancel was valid, who initiated it, or material facts, treat as **soft dispute** handling — [System rules — Soft disputes](../system-rules.md#soft-disputes) (record both sides, no blame assignment in MVP).

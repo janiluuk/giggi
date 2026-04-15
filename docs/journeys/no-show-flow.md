@@ -10,10 +10,10 @@ flowchart TD
 
     C -->|Yes| D[Proceed to completion flow]
     C -->|Worker no-show| E[Worker marked as no-show]
-    C -->|Employer no-show| F[Employer marked as no-show]
+    C -->|Client no-show| F[Client marked as no-show]
     C -->|Both absent| G[Both marked as no-show]
 
-    E --> H[Notify employer]
+    E --> H[Notify client]
     F --> I[Notify worker]
     G --> J[Notify both]
 
@@ -34,7 +34,7 @@ flowchart TD
 Track separately (for trust / reputation, not only star ratings):
 
 - Worker no-show rate (and counts)
-- Employer no-show rate (and counts)
+- Client no-show rate (and counts)
 - **Both absent** events
 
 ## Behaviour (product policy)

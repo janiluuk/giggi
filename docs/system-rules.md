@@ -13,6 +13,8 @@ When you add a new topic, append a **##** section below and a row in the [Table 
 | [Soft dispute handling (MVP)](#soft-disputes) | Mismatch / cancel conflict / no-show disagreement: acknowledge, record, no manual ruling. |
 | [Payment timing and method](#payment-timing) | Optional on gig, required on agreement; methods, defaults, AI hints. |
 | [Messaging concurrency](#messaging-concurrency) | Workers: many gigs/chats; poster: many chats per gig, many hires (agreements) per gig. |
+| **Trust composite (MVP)** | Defined in [`../giggi.md`](../giggi.md) §7.1 — reviews + completion + behaviour; UI shows stars + qualitative chip only. |
+| **Interest / ranking (MVP)** | Weighted scores by context (feed, search, profiles) in [`../giggi.md`](../giggi.md) §19 — factors + example blends; **not** shown as raw numbers in UI. |
 
 ---
 
@@ -134,7 +136,7 @@ Suggestions feed **gig creation** and **agreement draft** pre-fill; they **never
 
 - A worker may **chat and pursue as many gigs as they want in parallel** (many concurrent threads with different posters and/or gigs). The product does **not** force a single active “application” pipeline in MVP.
 
-**Gig poster (employer) side**
+**Client (gig poster) side**
 
 - For **one gig**, the poster may run **multiple concurrent chats** (e.g. several interested workers at once).
 - The poster may **hire more than one worker for the same gig** when the work supports it (e.g. crew, shifts, multiple roles). Each hire is a **separate agreement** (`gig_id` shared, **distinct** `worker_id` / agreement row). Do not assume one chat or one agreement per gig.

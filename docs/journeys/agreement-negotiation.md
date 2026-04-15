@@ -1,13 +1,13 @@
 # Agreement negotiation
 
-Versioned back-and-forth after **Hire** produces a draft ([Browse → hire](browse-to-hire.md)), until both parties accept the **same** version or negotiation ends. Continues the narrative in [`../../giggi.md`](../../giggi.md) §5.D.
+Versioned back-and-forth after **Hire** produces a draft ([Browse → hire](browse-to-hire.md)), until both parties accept the **same** version or negotiation ends. Continues the narrative in [`../../giggi.md`](../../giggi.md) §5.D. **Client** = gig poster in doc/code terms ([`../../giggi.md`](../../giggi.md) §1.2).
 
 ```mermaid
 flowchart TD
-    A[Employer clicks Hire] --> B[Agreement draft generated]
+    A[Client clicks Hire] --> B[Agreement draft generated]
     B --> C["Draft includes:<br/>Location<br/>Date and time<br/>Duration<br/>Compensation<br/>Payment timing<br/>Payment method<br/>Detailed checklist"]
 
-    C --> D[Employer reviews and sends draft]
+    C --> D[Client reviews and sends draft]
     D --> TD{Negotiation still valid?}
     TD -->|"No: expired, scheduled time passed, or 48h limit"| X[Agreement rejected / invalid]
     TD -->|Yes| E[Worker reviews current version]
@@ -22,17 +22,17 @@ flowchart TD
 
     H --> TH{Negotiation still valid?}
     TH -->|"No: expired, scheduled time passed, or 48h limit"| X
-    TH -->|Yes| I[Employer reviews current version]
+    TH -->|Yes| I[Client reviews current version]
 
     I --> TI{Negotiation still valid?}
     TI -->|"No: expired, scheduled time passed, or 48h limit"| X
-    TI -->|Yes| J{Employer action?}
+    TI -->|Yes| J{Client action?}
 
-    J -->|Accept| K[Employer accepts]
+    J -->|Accept| K[Client accepts]
     J -->|Edit and resend| D
     J -->|Reject| X
 
-    G --> L{Employer already accepted same version?}
+    G --> L{Client already accepted same version?}
     K --> M{Worker already accepted same version?}
 
     L -->|Yes| N[Agreement locked]
@@ -42,7 +42,7 @@ flowchart TD
     M -->|No| E
 ```
 
-**Validity gates:** `TD` runs right after an employer **send**; `TH` after a worker **send**; `TE` / `TI` before the **other party** chooses accept / edit / reject, so expiry or schedule slip ends negotiation instead of misrouting everyone to worker review.
+**Validity gates:** `TD` runs right after a **client** **send**; `TH` after a worker **send**; `TE` / `TI` before the **other party** chooses accept / edit / reject, so expiry or schedule slip ends negotiation instead of misrouting everyone to worker review.
 
 ## Rules (product + implementation)
 

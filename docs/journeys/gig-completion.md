@@ -7,7 +7,7 @@ flowchart TD
     A[Agreed gig time reached] --> B[Completion flow opens for both parties]
 
     B --> C[Worker selects outcome]
-    B --> D[Employer selects outcome]
+    B --> D[Client selects outcome]
 
     C --> C1[Completed as agreed]
     C --> C2[Partially completed]
@@ -61,8 +61,8 @@ flowchart TD
 Track for reputation / trust **even without reviews**:
 
 - Worker no-show  
-- Employer no-show  
+- Client no-show  
 - Cancellation by worker  
-- Cancellation by employer  
+- Cancellation by client  
 
 Keep these as **structured system signals**, distinct from free-text **reviews** in the feedback flow ([`../../giggi.md`](../../giggi.md) §5.F).

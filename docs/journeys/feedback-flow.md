@@ -18,9 +18,9 @@ flowchart TD
     G --> G2[Worker can be rated on Reliability]
     G --> G3[Worker can be rated on category-specific skill]
 
-    G --> G4[Employer can be rated on Clear instructions]
-    G --> G5[Employer can be rated on Fairness]
-    G --> G6[Employer can be rated on Communication]
+    G --> G4[Client / gig poster: Clear instructions]
+    G --> G5[Client / gig poster: Fairness]
+    G --> G6[Client / gig poster: Communication]
 
     E --> H[Submit feedback]
     F --> H
@@ -60,7 +60,7 @@ flowchart TD
 **Recommended optional dimensions**
 
 - **Worker:** Communication · Reliability · **Category-specific skill** (only when relevant), e.g. safe driving (transport), pet care (pet gigs), deep-cleaning quality (cleaning).
-- **Employer:** Clear instructions · Fairness · Communication.
+- **Client (gig poster, doc term):** Clear instructions · Fairness · Communication.
 
 **UX**
 

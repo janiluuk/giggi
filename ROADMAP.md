@@ -165,13 +165,13 @@ Maps to §3 **Agreement**, §5 Agreement & completion flows, §6 checklist rules
 
 | Step | Description | Status |
 | ---- | ----------- | ------ |
-| 5.1 | Schema: `agreements` (gig_id, employer_id, worker_id, scheduled_time, price, location, checklist JSON, status, timestamps). | `PLANNED` |
+| 5.1 | Schema: `agreements` (gig_id, **client_id**, worker_id, scheduled_time, price, location, checklist JSON, status, timestamps — `employer_id` legacy alias). | `PLANNED` |
 | 5.2 | State machine (MVP):
 PENDING → CONFIRMED → COMPLETED | CANCELLED
 DISPUTED deferred to Phase B | `PLANNED` |
 | 5.3 | API: create draft from gig (pre-fill time, price, checklist, location); worker confirm; lock checklist on CONFIRMED. | `PLANNED` |
 | 5.4 | Trigger gig auto-close on first binding agreement (coordinate with §9). | `PLANNED` |
-| 5.5 | Completion flow: employer outcome (completed / minor issues / not completed); worker confirm or dispute path **(DECISION)**. | `PLANNED` |
+| 5.5 | Completion flow: symmetric two-sided claims (see `giggi.md` §5.E + gig-completion journey); legacy “employer-first” wording **obsolete**. | `PLANNED` |
 | 5.6 | Frontend: hire flow, agreement detail, status badges. | `PLANNED` |
 
 ---
