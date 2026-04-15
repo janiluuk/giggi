@@ -1,6 +1,6 @@
 # Feedback (after completion)
 
-Collects **experience** ratings after completion is available (same lifecycle window as completion: from **agreed gig time**). **Completion** answers *what happened*; **feedback** answers *how it was*. Policy detail and metrics: [`../../giggi.md`](../../giggi.md) §5.F.
+Collects **experience** ratings after completion is available (same lifecycle window as completion: from **agreed gig time**). **Completion** answers *what happened*; **feedback** answers *how it was*. Policy detail and metrics: [`../../giggi.md`](../../giggi.md) §5.F. After **soft dispute** surfaces (mismatch, cancel conflict, no-show disagreement), users may still be routed here per [System rules — Soft disputes](../system-rules.md#soft-disputes).
 
 ```mermaid
 flowchart TD

@@ -31,7 +31,7 @@ The platform ensures that:
 - system signals (completion status, no-shows, cancellations) support honest evaluation
 
 Every feature in the product exists to support this core flow:
-**create → match → agree → complete → review → build trust**
+**create → match → agree → perform → (complete or cancel) → review → build trust**
 
 Over time, this loop creates a reliable ecosystem where:
 - good actors are rewarded
@@ -49,10 +49,18 @@ Over time, this loop creates a reliable ecosystem where:
 3. [Gig creation](docs/journeys/gig-creation.md) — Start create gig, creation source, AI parse, pre-fill, required fields, publish.
 4. [Browse → hire](docs/journeys/browse-to-hire.md) — Worker vs employer entry into gig-context chat; Hire → agreement draft.
 5. [Agreement negotiation](docs/journeys/agreement-negotiation.md) — Versioned draft, accept / edit / resend / reject, expiry rules, lock when both accept the same version.
-6. [Gig completion](docs/journeys/gig-completion.md) — After agreed end time: independent completion claims, match or mismatch, response window, then hand off to feedback.
-7. [Feedback flow](docs/journeys/feedback-flow.md) — Required stars, optional text and dimensions, reveal rules, edit until publish.
+6. [Cancellation](docs/journeys/cancellation-flow.md) — While agreement is active and gig not completed: employer or worker cancel, early vs late marks, immediate notify, agreement ends, optional feedback; trust signals only in MVP (no hard penalties).
+7. [No-show](docs/journeys/no-show-flow.md) — At agreed gig **start**: waiting/grace window, user-driven attendance outcome (no auto check-in in MVP), marks and notifications, then **completion flow** opens for claims including *Did not happen*.
+8. [Gig completion](docs/journeys/gig-completion.md) — After agreed **end** time: independent completion claims, match or mismatch, response window, then hand off to feedback.
+9. [Feedback flow](docs/journeys/feedback-flow.md) — Required stars, optional text and dimensions, reveal rules, edit until publish.
 
 [Index of journey files](docs/journeys/README.md). Add new charts under `docs/journeys/` and extend the list above when the backbone gains a new leg.
+
+**Conflicting outcomes (MVP):** when completion **mismatches**, **cancellation** is contested, or **no-show** narratives disagree, use **soft dispute handling** — acknowledge, collect input, improve the product; **no** manual adjudication in MVP. See [System rules — Soft disputes](docs/system-rules.md#soft-disputes).
+
+**Payment timing / method (listings + agreements):** [System rules — Payment timing](docs/system-rules.md#payment-timing).
+
+**Other product rules (non-journey):** extend the [system rules](docs/system-rules.md) table of contents as new topics appear (e.g. **messaging concurrency**: many chats per worker, many hires per gig).
 
 ---
 
@@ -119,6 +127,7 @@ Over time, this loop creates a reliable ecosystem where:
 * location_data (geo + neighbourhood)
 * compensation_type (FIXED | HOURLY | NEGOTIABLE)
 * compensation_amount
+* **Optional (payment intent on listing):** `payment_timing_preference` (AFTER_COMPLETION | PARTIAL_UPFRONT_THEN_COMPLETION | FLEXIBLE_DISCUSS) — default suggestion **after completion**; `payment_method_preference` (CASH | MOBILE_OR_BANK | OTHER) and optional `payment_contact_hint` when a method needs a number/identifier (disclosure only; **no** in-app payments in MVP)
 * effort_level (QUICK | NORMAL | HEAVY)
 * urgency (NOW | TODAY | WEEK | FLEXIBLE) — see **[Urgency and intent modifiers (alignment)](#urgency-and-intent-modifiers-alignment)** for mapping to feed/posting intent
 * expires_at
@@ -134,6 +143,7 @@ Over time, this loop creates a reliable ecosystem where:
 * receiver_id
 * content
 * created_at
+* **Concurrency:** the model must support **many concurrent conversations** per user (workers across gigs; posters with several candidates on one gig). Prefer a **thread / conversation id** (or equivalent) rather than implying a single channel per user pair — see [System rules — Messaging concurrency](docs/system-rules.md#messaging-concurrency).
 
 ---
 
@@ -147,8 +157,12 @@ Over time, this loop creates a reliable ecosystem where:
 * price
 * location
 * checklist (JSON array)
+* **Required (payment clarity):** `payment_timing` (same enum as gig preference; must be **explicit** on the agreement — default pre-fill **after completion**); `payment_method` (CASH | MOBILE_OR_BANK | OTHER); `payment_contact_detail` **when** method is cash or mobile/bank (coordinating phone or allowed identifier — policy/PII as per region)
 * status (PENDING | CONFIRMED | COMPLETED | DISPUTED | CANCELLED)
 * created_at
+* **Many workers on one gig:** several **agreement** rows may share the same `gig_id` with **different** `worker_id` when the poster hires multiple people for that listing (parallel or sequential). Each agreement has its own lifecycle ([System rules — Messaging concurrency](docs/system-rules.md#messaging-concurrency)).
+
+Full UX options, field behaviour, and AI hints: [System rules — Payment timing](docs/system-rules.md#payment-timing).
 
 ---
 
@@ -349,6 +363,7 @@ Discovery and ranking use this mental model (the **gig card** only reflects each
 * Users communicate freely
 * No structured application system
 * CTA: "Hire this person"
+* **Parallelism:** workers may chat and pursue **many gigs at once**; a gig poster may keep **multiple concurrent threads** on the **same gig** (several candidates) and may **hire multiple workers** for that gig via **separate agreements**. Inbox and gig surfaces must stay clear per thread — [System rules — Messaging concurrency](docs/system-rules.md#messaging-concurrency).
 
 ---
 
@@ -362,20 +377,23 @@ Discovery and ranking use this mental model (the **gig card** only reflects each
    * price
    * checklist
    * location
+   * **payment timing** and **payment method** (from gig preferences when set; otherwise defaults — **after completion** for timing) — both must be **visible and editable** in the draft; see [System rules — Payment timing](docs/system-rules.md#payment-timing)
 
 3. Worker confirms
 
 4. Agreement becomes locked
 
+5. Until the gig is **completed**, either party may **cancel** (early vs late, notifications, signals): [Cancellation](docs/journeys/cancellation-flow.md).
+
 ---
 
 ### E. Completion Flow
 
-After the **agreed gig end time**, completion opens for **both** parties independently (not employer-first). Full diagram and rules: [Gig completion](docs/journeys/gig-completion.md).
+After the **agreed gig end time**, completion opens for **both** parties independently (not employer-first). Full diagram and rules: [Gig completion](docs/journeys/gig-completion.md). **At agreed start time**, no-show / attendance handling (grace, user input, signals, then opening completion) — [No-show flow](docs/journeys/no-show-flow.md).
 
 * Each side picks one of: **completed as agreed** · **partially completed** · **did not happen** (human wording in UI).
 * **Both match** on the same tier → system adopts that outcome.
-* **Disagree** → flag **mismatch / disputed** outcome.
+* **Disagree** → flag **mismatch / disputed** outcome; surface **soft dispute** UX (acknowledge, optional description, record both sides — **no** manual resolution in MVP): [System rules — Soft disputes](docs/system-rules.md#soft-disputes).
 * **Response window** ends with only one submission → store **one-sided** outcome; other side **no response**.
 * **Neither** submits → **unconfirmed**.
 * Track **structured trust signals** separately from free-text feedback (worker/employer no-show, cancellations by side) for reputation even when reviews are missing.
@@ -571,6 +589,8 @@ ai.generateChecklist({
 })
 ```
 
+Payment **timing** suggestions by category (cleaning / transport → after completion; longer gigs → flexible) belong in the same assist layer — see [System rules — Payment timing](docs/system-rules.md#payment-timing); never override explicit user choices on the agreement.
+
 ---
 
 ### Configuration:
@@ -611,16 +631,20 @@ AI_PROVIDER=openai
 * No automatic bans
 * Reduce visibility instead
 
+**Soft disputes** (completion mismatch, cancellation conflict, no-show disagreement): the platform **records** both sides’ input and **does not** manually resolve or assign blame in MVP; copy and data rules — [System rules — Soft disputes](docs/system-rules.md#soft-disputes).
+
 ---
 
 ## 14. Cancellation System
 
+Journey (who cancelled, early vs late, notifications, optional feedback, signals): [Cancellation](docs/journeys/cancellation-flow.md). If parties **conflict** on what happened (contested cancel, contradictory accounts), treat as **soft dispute** — [System rules — Soft disputes](docs/system-rules.md#soft-disputes).
+
 Track:
 
 * no-shows
-* cancellations
+* cancellations (by side; **late** vs early — see journey doc for “late” window, e.g. 12–24h before start)
 
-Soft penalties:
+Soft penalties (post-MVP / policy; **MVP** is signal-only per journey doc):
 
 * reduced visibility
 * temporary posting cooldown
@@ -650,7 +674,7 @@ Soft penalties:
 ## 16. Future Expansion (Phase B)
 
 * Payment / escrow system
-* AI dispute resolution
+* AI dispute resolution (see also structured disputes / mediation in [System rules — Future soft disputes](docs/system-rules.md#future-soft-disputes))
 * advanced recommendation system
 * trust scoring algorithm
 * local LLM deployment

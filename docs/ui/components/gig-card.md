@@ -56,6 +56,14 @@ In a **[feed list](feed-list.md)** layout, the gig row has **no** elevated surfa
 
 Follow **[`giggi.md`](../../giggi.md) §3 Gig**: `compensation_type` (`FIXED` | `HOURLY` | `NEGOTIABLE`) and `compensation_amount` where applicable — e.g. fixed **€X**, hourly with amount or range, **Negotiable**, etc. Exact strings and formatting stay aligned with product copy rules in `giggi.md`.
 
+### Payment timing & method (when present on gig)
+
+If the gig has optional **`payment_timing_preference`** / **`payment_method_preference`** (see [`giggi.md`](../../giggi.md) §3 and [System rules — Payment timing](../../system-rules.md#payment-timing)):
+
+* Show **short, scannable** labels on the meta line or secondary row (e.g. “After job · Cash”, “Pay in chat”), not long policy text.
+* **Do not** show phone/account numbers on the card; those stay for agreement or post-match surfaces per privacy rules.
+* If unset, **omit** the row — no placeholder noise.
+
 ### Location (gig-based)
 
 * Always reflect the **gig’s location mode**, not viewer or creator location:
@@ -148,6 +156,7 @@ What the row **is**, driven by gig data (not loading/error chrome).
 * [ ] Urgency / time intent chip present when data supports it
 * [ ] Conditional chips (expires soon, just created, featured, …) only when rules say so
 * [ ] Meta line readable at a glance; compensation matches `giggi.md` §3 patterns
+* [ ] If gig has payment timing/method preferences: short labels only; no phone/account on card ([System rules — Payment timing](../../system-rules.md#payment-timing))
 * [ ] Full title visible (multi-line OK); snippet never ugly mid-word/mid-sentence
 * [ ] Works without image
 * [ ] Featured image (if present) does not dominate text

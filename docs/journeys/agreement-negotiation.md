@@ -5,7 +5,7 @@ Versioned back-and-forth after **Hire** produces a draft ([Browse → hire](brow
 ```mermaid
 flowchart TD
     A[Employer clicks Hire] --> B[Agreement draft generated]
-    B --> C["Draft includes:<br/>Location<br/>Date and time<br/>Duration<br/>Compensation<br/>Detailed checklist"]
+    B --> C["Draft includes:<br/>Location<br/>Date and time<br/>Duration<br/>Compensation<br/>Payment timing<br/>Payment method<br/>Detailed checklist"]
 
     C --> D[Employer reviews and sends draft]
     D --> TD{Negotiation still valid?}
@@ -71,3 +71,7 @@ flowchart TD
 **AI**
 
 - AI **only prepares** drafts and assists copy/structure; it **never** finalizes or locks an agreement without explicit human acceptances on both sides.
+
+**Payment timing & method**
+
+- **Required** on every agreement version the parties review: which **timing** (default pre-fill: after completion) and which **method**; show **exactly** what will be locked. Conditional **contact / number** fields for cash or mobile/bank — see [System rules — Payment timing](../system-rules.md#payment-timing).

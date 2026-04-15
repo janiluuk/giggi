@@ -1,6 +1,6 @@
 # Gig completion (before feedback)
 
-Two-sided **completion claims** after the **agreed gig end time**, then system resolution (match, mismatch, one-sided, or unconfirmed), then **feedback / review** eligibility — see [Feedback flow](feedback-flow.md). Narrative context: [`../../giggi.md`](../../giggi.md) §5.E–F.
+Two-sided **completion claims** after the **agreed gig end time**, then system resolution (match, mismatch, one-sided, or unconfirmed), then **feedback / review** eligibility — see [Feedback flow](feedback-flow.md). **At gig start**, arrival / no-show handling (grace, signals, then opening completion UI) lives in [No-show flow](no-show-flow.md). Narrative context: [`../../giggi.md`](../../giggi.md) §5.E–F.
 
 ```mermaid
 flowchart TD
@@ -52,7 +52,7 @@ flowchart TD
 - **UI labels** (human wording): *Completed as agreed* · *Partially completed* · *Did not happen*.
 - Completion is a **two-sided claim**, not a single source of truth.
 - **Both match** → system adopts that tier (`F` / `G` / `H`).
-- **Disagree** → **mismatch / disputed** outcome (`I`).
+- **Disagree** → **mismatch / disputed** outcome (`I`). MVP **UX and policy** for that situation: [System rules — Soft disputes](../system-rules.md#soft-disputes) (acknowledge, collect input, no manual ruling).
 - **Only one** party inside the window → store one-sided outcome; other side **no response** (`M`).
 - **Neither** responds → **Unconfirmed** (`N`).
 

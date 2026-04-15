@@ -21,3 +21,5 @@ flowchart TD
 
     D --> H
 ```
+
+**Concurrency:** opening **Chat** is not limited to a single gig or thread. Workers may have **many active chats** (different gigs/posters); posters may have **several threads per gig**. See [System rules — Messaging concurrency](../system-rules.md#messaging-concurrency).
