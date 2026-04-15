@@ -79,30 +79,30 @@ These execution decisions are now locked into the roadmap.
 
 ## Phase 0 — Project foundation
 
-**Status:** `PLANNED`
+**Status:** `IN_PROGRESS`
 
 Goal: repo, tooling, environments, and conventions so later phases plug in cleanly.
 
 | Step | Description | Status |
 | ---- | ----------- | ------ |
-| 0.1 | Initialize repo for the chosen Phase A stack: **Next.js app/backend** plus shared packages for types, API contracts, and domain logic. | `PLANNED` |
-| 0.2 | TypeScript, lint, format, test runner; pre-commit optional. | `PLANNED` |
-| 0.3 | Environment config pattern (`AI_PROVIDER=ollama`, DB URLs, OAuth secrets, cluster deploy secrets) — no secrets in repo. | `PLANNED` |
-| 0.4 | Docker Compose (or equivalent): PostgreSQL + Redis for local dev. | `PLANNED` |
-| 0.5 | Database migration tool (e.g. Prisma, Drizzle, TypeORM) aligned with the chosen Next.js stack and deployment model. | `PLANNED` |
-| 0.6 | GitHub Actions baseline CI: lint, typecheck, unit tests on PR + push; cache dependencies and test artifacts. | `PLANNED` |
-| 0.7 | Add workflow jobs for integration/E2E and **Playwright visual regression** checks, including artifact upload for failed runs. | `PLANNED` |
-| 0.8 | Establish screenshot conventions: path (`docs/screenshots/phase-<n>/...`), naming, Playwright baseline refresh process, and PR checklist. | `PLANNED` |
+| 0.1 | Initialize repo for the chosen Phase A stack: **Next.js app/backend** plus shared packages for types, API contracts, and domain logic. | `DONE` |
+| 0.2 | TypeScript, lint, format, test runner; pre-commit optional. | `DONE` |
+| 0.3 | Environment config pattern (`AI_PROVIDER=ollama`, DB URLs, OAuth secrets, cluster deploy secrets) — no secrets in repo. | `DONE` |
+| 0.4 | Docker Compose (or equivalent): PostgreSQL + Redis for local dev. | `DONE` |
+| 0.5 | Database migration tool (e.g. Prisma, Drizzle, TypeORM) aligned with the chosen Next.js stack and deployment model. | `DONE` |
+| 0.6 | GitHub Actions baseline CI: lint, typecheck, unit tests on PR + push; cache dependencies and test artifacts. | `DONE` |
+| 0.7 | Add workflow jobs for integration/E2E and **Playwright visual regression** checks, including artifact upload for failed runs. | `DONE` |
+| 0.8 | Establish screenshot conventions: path (`docs/screenshots/phase-<n>/...`), naming, Playwright baseline refresh process, and PR checklist. | `DONE` |
 | 0.9 | Initialize **React Native** app projects for iOS and Android with shared API/domain packages and env-configurable API/base URLs. | `PLANNED` |
 | 0.10 | Add separate GitHub Actions build workflows/jobs for `web`, `ios`, and `android`; publish artifacts independently per platform. | `PLANNED` |
 | 0.11 | Define mobile signing/config secrets strategy for **self-signed/internal builds** first (bundle IDs, provisioning profiles, Android keystore) for CI/CD readiness. | `PLANNED` |
-| 0.12 | Define CI/CD deployment workflow for the **self-hosted local cluster**: environment secrets, runner/network access, deploy command, health checks, and rollback path. | `PLANNED` |
+| 0.12 | Define CI/CD deployment workflow for the **self-hosted local cluster**: environment secrets, runner/network access, deploy command, health checks, and rollback path. | `DONE` |
 
 ---
 
 ## Phase 1 — Authentication & user system
 
-**Status:** `PLANNED`
+**Status:** `IN_PROGRESS`
 Maps to [`giggi.md` §18 item 1](giggi.md#giggi-18), entities **User** / **Profile** ([§3](giggi.md#giggi-3)), identity **Tier 1–2** ([§8](giggi.md#giggi-8)).
 
 | Step | Description | Status |
@@ -158,13 +158,13 @@ Maps to [§5](giggi.md#giggi-5) Discovery, **[§19](giggi.md#giggi-19)** homepag
 | 3.4 | **Blended interest score** per [§19](giggi.md#giggi-19-interest): normalise factors to 0–1; **default gig discovery blend** (starting weights, config-tunable): `location 0.30 + urgency 0.25 + freshness 0.20 + category 0.15 + trust 0.10` (+ **engagement** term for *Nearby & Relevant* per [§19 ranking blend](giggi.md#giggi-19-ranking-blend) / cold-start rules). Implement **separate** ranking paths for **gig search**, **worker search**, and **profile / worker lists** per [§19](giggi.md#giggi-19-interest) priority tables. **Do not** expose raw scores in UI ([`docs/ui/README.md`](docs/ui/README.md)). | `PLANNED` |
 | 3.5 | Urgent decay (`exp(-time_since_post)` or discrete tiers) and soft quotas ([§19](giggi.md#giggi-19)). | `PLANNED` |
 | 3.6 | Track lightweight engagement (message count, optional click events) for ranking. | `PLANNED` |
-| 3.7 | Build Home shell per [UI screen spec](docs/ui/screens/home.md): top app menu, mobile bottom bar, fixed desktop left-nav vs mobile secondary menu, and optional right rail behavior. | `PLANNED` |
-| 3.8 | Implement nav/filter interactions: location radius control, Home reset behavior, category nesting + starred categories, saved searches, and `Gigs offer` scoped feed. | `PLANNED` |
-| 3.9 | Implement sort strip (**Best / Popular / Latest / Urgent**) and scroll-threshold refresh behavior with documented ordering contracts per page context. | `PLANNED` |
-| 3.10 | Implement [Feed list](docs/ui/components/feed-list.md) and [Gig card](docs/ui/components/gig-card.md) specs: flat rows, list-owned separators, chips/tier rules, footer action hit hierarchy, accessibility labels. | `PLANNED` |
+| 3.7 | Build Home shell per [UI screen spec](docs/ui/screens/home.md): top app menu, mobile bottom bar, fixed desktop left-nav vs mobile secondary menu, and optional right rail behavior. | `DONE` |
+| 3.8 | Implement nav/filter interactions: location radius control, Home reset behavior, category nesting + starred categories, saved searches, and `Gigs offer` scoped feed. | `IN_PROGRESS` |
+| 3.9 | Implement sort strip (**Best / Popular / Latest / Urgent**) and scroll-threshold refresh behavior with documented ordering contracts per page context. | `DONE` |
+| 3.10 | Implement [Feed list](docs/ui/components/feed-list.md) and [Gig card](docs/ui/components/gig-card.md) specs: flat rows, list-owned separators, chips/tier rules, footer action hit hierarchy, accessibility labels. | `DONE` |
 | 3.11 | Small “People offering help near you” strip on Find help ([§20](giggi.md#giggi-20)) — optional MVP. | `PLANNED` |
-| 3.12 | Tests: ranking contract by context (home/search/saved), filters/sort behavior, infinite scroll, and accessibility assertions for card actions. | `PLANNED` |
-| 3.13 | Screenshots: Home (mobile + desktop), left-nav/secondary-menu states, sort modes, feed list states (loading/empty/error), and gig card variants (with/without image, urgency/payment chips, light/dark). | `PLANNED` |
+| 3.12 | Tests: ranking contract by context (home/search/saved), filters/sort behavior, infinite scroll, and accessibility assertions for card actions. | `IN_PROGRESS` |
+| 3.13 | Screenshots: Home (mobile + desktop), left-nav/secondary-menu states, sort modes, feed list states (loading/empty/error), and gig card variants (with/without image, urgency/payment chips, light/dark). | `IN_PROGRESS` |
 
 ---
 

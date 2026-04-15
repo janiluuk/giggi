@@ -1,6 +1,6 @@
 # Home (shell + feed)
 
-**Status:** Draft
+**Status:** Implemented
 
 **Related:** [`../ui-system.md`](../ui-system.md); [Feed list](../components/feed-list.md); [Gig card](../components/gig-card.md); [`../tokens.md`](../tokens.md); [`giggi.md` §4](../../giggi.md#giggi-4) (categories), [§5.B](../../giggi.md#giggi-5-b) (discovery), [§19](../../giggi.md#giggi-19) (homepage feed & ranking)
 
