@@ -256,7 +256,7 @@ font-family:
 
 ### Identity & trust (align with product tiers)
 
-* Cards must follow **visibility rules** from the product spec ([`giggi.md` §8](giggi.md)): **Tier 1** = lighter trust surface (e.g. nickname, optional “new” / limited cues); **Tier 2** = show **phone-verified** affordance where policy allows and show **rating / review aggregates** when the product exposes them publicly.
+* Cards must follow **visibility rules** from the product spec ([`giggi.md` §8](giggi.md#giggi-8)): **Tier 1** = lighter trust surface (e.g. nickname, optional “new” / limited cues); **Tier 2** = show **phone-verified** affordance where policy allows and show **rating / review aggregates** when the product exposes them publicly.
 * Do **not** show phone numbers or full identity on the **feed card** unless the agreement/messaging stage allows it (progressive reveal stays in deeper views).
 
 ---

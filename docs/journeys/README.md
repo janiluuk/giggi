@@ -1,6 +1,6 @@
 # User journeys
 
-Mermaid flowcharts for **navigation and auth gates**, one file per journey. They complement narrative flows in [`../../giggi.md`](../../giggi.md) §5.
+Mermaid flowcharts for **navigation and auth gates**, one file per journey. They complement narrative flows in [`giggi.md` §5](../../giggi.md#giggi-5).
 
 **Personas (map journeys to workers vs clients):** [`../personas/README.md`](../personas/README.md).
 

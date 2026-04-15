@@ -1,6 +1,6 @@
 # Feedback (after completion)
 
-Collects **experience** ratings after completion is available (same lifecycle window as completion: from **agreed gig time**). **Completion** answers *what happened*; **feedback** answers *how it was*. Policy detail and metrics: [`../../giggi.md`](../../giggi.md) §5.F. After **soft dispute** surfaces (mismatch, cancel conflict, no-show disagreement), users may still be routed here per [System rules — Soft disputes](../system-rules.md#soft-disputes).
+Collects **experience** ratings after completion is available (same lifecycle window as completion: from **agreed gig time**). **Completion** answers *what happened*; **feedback** answers *how it was*. Policy detail and metrics: [`giggi.md` §5.F](../../giggi.md#giggi-5-f). After **soft dispute** surfaces (mismatch, cancel conflict, no-show disagreement), users may still be routed here per [System rules — Soft disputes](../system-rules.md#soft-disputes).
 
 ```mermaid
 flowchart TD
@@ -74,7 +74,7 @@ flowchart TD
 - During wait, show: *“Your feedback will be visible when the other party submits, or in 3 days.”*
 - If the other party **never** submits → **auto-publish** the one-sided feedback after **3 days** (`M`).
 
-**Cross-doc:** If you unify all “reveal windows” in one place, reconcile this **3-day** one-sided path with the **7-day** experiment language in [`../../giggi.md`](../../giggi.md) §5.F so engineering and support see one clock.
+**Cross-doc:** If you unify all “reveal windows” in one place, reconcile this **3-day** one-sided path with the **7-day** experiment language in [`giggi.md` §5.F](../../giggi.md#giggi-5-f) so engineering and support see one clock.
 
 ## Editing and locks
 

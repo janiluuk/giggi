@@ -2,7 +2,7 @@
 
 **Status:** Draft
 
-**Related:** [`../ui-system.md`](../ui-system.md); [Feed list](../components/feed-list.md); [Gig card](../components/gig-card.md); [`../tokens.md`](../tokens.md); [`../../giggi.md`](../../giggi.md) §4 (categories), §5.B (discovery), §19 (homepage feed & ranking)
+**Related:** [`../ui-system.md`](../ui-system.md); [Feed list](../components/feed-list.md); [Gig card](../components/gig-card.md); [`../tokens.md`](../tokens.md); [`giggi.md` §4](../../giggi.md#giggi-4) (categories), [§5.B](../../giggi.md#giggi-5-b) (discovery), [§19](../../giggi.md#giggi-19) (homepage feed & ranking)
 
 ## Purpose
 
@@ -13,7 +13,7 @@ Philosophy matches [Feed list](../components/feed-list.md): **flat feed rows**, 
 ## Scope (this spec)
 
 * **In scope:** **App menu** (top), **left navigation** (desktop) / **secondary menu** (mobile), **main feed** (sort strip, refresh affordance, list behavior), **mobile bottom bar**, optional **right rail** (TBD).
-* **Out of scope:** exact **weighted formulas** for “Best” / “Popular” / §19 section math — stay in [`giggi.md`](../../giggi.md) §19 and related product docs; **category tree data** — stay in [`giggi.md`](../../giggi.md) §4 (UI only describes interaction: tap category → filter + nested list).
+* **Out of scope:** exact **weighted formulas** for “Best” / “Popular” / [§19](../../giggi.md#giggi-19) section math — stay in [`giggi.md` §19](../../giggi.md#giggi-19-interest) and related product docs; **category tree data** — stay in [`giggi.md` §4](../../giggi.md#giggi-4) (UI only describes interaction: tap category → filter + nested list).
 
 ## Layout model
 
@@ -57,11 +57,11 @@ A **vertical list** in a **left column**, **fixed** (does **not** scroll with th
 
 **Order (top → bottom):**
 
-1. **Location & vicinity** — e.g. **“Kamppi · 60 km”** (neighbourhood + radius or product-equivalent); tap opens location/radius editor. Must stay consistent with gig location copy rules ([`giggi.md`](../../giggi.md) / [`ui-system.md`](../ui-system.md) §16).
+1. **Location & vicinity** — e.g. **“Kamppi · 60 km”** (neighbourhood + radius or product-equivalent); tap opens location/radius editor. Must stay consistent with gig location copy rules ([`giggi.md` §3 Gig](../../giggi.md#giggi-3-gig) / [`ui-system.md`](../ui-system.md) §16).
 2. **Home** — navigates to this feed; **resets filters** to default Home scope (same as logo-on-Home behavior).
 3. **Gigs offer** — navigates to a feed that shows **only gig offers** (`type = OFFER` or product definition). On **mobile**, this item moves to the **bottom tab bar** or secondary menu (not duplicated in conflicting ways).
 4. **Saved searches** — list appears **only if** the user has saved searches; each item runs that saved query / filter set (product TBD).
-5. **Categories (first level)** — from [`giggi.md`](../../giggi.md) §4 top-level groups. **Tap** a category: **filters the main feed** to that branch and reveals **nested (second-level) categories** in the nav (expand inline or replace list — product choice; must be keyboard- and SR-friendly).
+5. **Categories (first level)** — from [`giggi.md` §4](../../giggi.md#giggi-4) top-level groups. **Tap** a category: **filters the main feed** to that branch and reveals **nested (second-level) categories** in the nav (expand inline or replace list — product choice; must be keyboard- and SR-friendly).
 6. **Starred categories** (logged-in only) — user can **star** categories they care about; **starred** items appear in a **separate block above** the normal category list. Starring is **per user**, not global.
 
 **Interaction notes:**
@@ -83,7 +83,7 @@ A **vertical list** in a **left column**, **fixed** (does **not** scroll with th
 
   | Mode | Intent (product refines formulas) |
   | --- | --- |
-  | **Best** | Default — composite **weighted match** (location, interest, §19-style signals, cold-start rules in `giggi.md` §19). |
+  | **Best** | Default — composite **weighted match** (location, interest, [§19](../../giggi.md#giggi-19)-style signals, cold-start rules in [`giggi.md` §19](../../giggi.md#giggi-19-interest)). |
   | **Popular** | Weighted toward **views** / engagement (define metric in product). |
   | **Latest** | **Creation date** descending. |
   | **Urgent** | **Urgency** and **expiry** (`expires_at`) drive ordering. |
@@ -94,7 +94,7 @@ A **vertical list** in a **left column**, **fixed** (does **not** scroll with th
 
 * **Loading / skeleton:** **lightweight** — text-first skeleton rows per feed list; avoid heavy shimmer or large spinners over the whole page.
 
-**§19 sections:** if the product still uses **sectioned** homepage blocks (Urgent Now, Nearby, …) **inside** “Best”, document whether sort modes **flatten** to one list or **keep** sections; implementation must match [`giggi.md`](../../giggi.md) §19 once decided.
+**[§19](../../giggi.md#giggi-19) sections:** if the product still uses **sectioned** homepage blocks (Urgent Now, Nearby, …) **inside** “Best”, document whether sort modes **flatten** to one list or **keep** sections; implementation must match [`giggi.md` §19](../../giggi.md#giggi-19) once decided.
 
 ## Right rail (optional, TBD)
 
@@ -104,7 +104,7 @@ Add a **right column** only if the **main feed** feels **too wide** for comforta
 
 ## Behavior (cross-links)
 
-* **Ranking & sections:** [`giggi.md`](../../giggi.md) §19.
+* **Ranking & sections:** [`giggi.md` §19](../../giggi.md#giggi-19).
 * **Page-level ranking contract:** [Feed list — Home](../components/feed-list.md).
 * **Filters** from nav apply to the **same** feed component; empty state after restrictive filters per feed list.
 
@@ -135,4 +135,4 @@ Add a **right column** only if the **main feed** feels **too wide** for comforta
 - [ ] Sort modes (Best / Popular / Latest / Urgent) documented in product for formulas; UI shows active sort
 - [ ] Scroll-threshold refresh + light skeletons
 - [ ] Right rail only when width warrants; legal/subscribe links only
-- [ ] No dead-end empty states; alignment with [`giggi.md`](../../giggi.md) §19 for Best view
+- [ ] No dead-end empty states; alignment with [`giggi.md` §19](../../giggi.md#giggi-19) for Best view

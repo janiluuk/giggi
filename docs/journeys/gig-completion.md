@@ -1,6 +1,6 @@
 # Gig completion (before feedback)
 
-Two-sided **completion claims** after the **agreed gig end time**, then system resolution (match, mismatch, one-sided, or unconfirmed), then **feedback / review** eligibility — see [Feedback flow](feedback-flow.md). **At gig start**, arrival / no-show handling (grace, signals, then opening completion UI) lives in [No-show flow](no-show-flow.md). Narrative context: [`../../giggi.md`](../../giggi.md) §5.E–F.
+Two-sided **completion claims** after the **agreed gig end time**, then system resolution (match, mismatch, one-sided, or unconfirmed), then **feedback / review** eligibility — see [Feedback flow](feedback-flow.md). **At gig start**, arrival / no-show handling (grace, signals, then opening completion UI) lives in [No-show flow](no-show-flow.md). Narrative context: [`giggi.md` §5.E](../../giggi.md#giggi-5-e)–[§5.F](../../giggi.md#giggi-5-f).
 
 ```mermaid
 flowchart TD
@@ -65,4 +65,4 @@ Track for reputation / trust **even without reviews**:
 - Cancellation by worker  
 - Cancellation by client  
 
-Keep these as **structured system signals**, distinct from free-text **reviews** in the feedback flow ([`../../giggi.md`](../../giggi.md) §5.F).
+Keep these as **structured system signals**, distinct from free-text **reviews** in the feedback flow ([`giggi.md` §5.F](../../giggi.md#giggi-5-f)).

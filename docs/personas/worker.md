@@ -1,6 +1,6 @@
 # Persona: Worker / Geek Seeker (finds gigs, gets hired) — documentation only
 
-In **docs and code**, **worker** means the party **performing the gig** under a given **agreement** (or chatting toward hire). It is **not** a permanent account label: the same person can be a **client** on another gig. See [Personas README](README.md) and [`../../giggi.md`](../../giggi.md) §1.2.
+In **docs and code**, **worker** means the party **performing the gig** under a given **agreement** (or chatting toward hire). It is **not** a permanent account label: the same person can be a **client** on another gig. See [Personas README](README.md) and [`giggi.md` §1.2](../../giggi.md#giggi-1-2).
 
 Someone who **earns from gigs**: discovers work, messages people who posted listings, may be hired on an agreement, shows up (or not), completes the **completion** step, and leaves **feedback**.
 
@@ -78,4 +78,4 @@ Someone who **earns from gigs**: discovers work, messages people who posted list
 ## Notes for design & eng
 
 - **Inbox** must stay legible with **many threads** ([messaging concurrency](../system-rules.md#messaging-concurrency)).
-- Worker often **does not** initiate Hire; they still need clarity when the **client** sends an agreement draft — **surface copy** should use **names**, not “the client” as a cold label ([`../../giggi.md`](../../giggi.md) §1.2).
+- Worker often **does not** initiate Hire; they still need clarity when the **client** sends an agreement draft — **surface copy** should use **names**, not “the client” as a cold label ([`giggi.md` §1.2](../../giggi.md#giggi-1-2)).

@@ -13,6 +13,8 @@ Core principle:
 
 > Structured UI + Open marketplace + AI-assisted workflows
 
+<a id="giggi-1-1"></a>
+
 ### 1.1 Product backbone (vision and journey sequence)
 
 **Synopsis.** People **post gigs**; others **browse**, enter conversations, and **get hired** through explicit agreements tied to real work. **Trust** compounds from **honest signals**—two-sided completion claims, structured behavioural markers (no-shows, cancellations), and **feedback** whose **visibility and timing the system controls** so neither side can easily steamroll the other. **Every other feature** (search, ranking, categories, AI drafting, verification, notifications, maps, and so on) exists to **support this spine**, not to replace it.
@@ -64,6 +66,8 @@ Over time, this loop creates a reliable ecosystem where:
 
 **Other product rules (non-journey):** extend the [system rules](docs/system-rules.md) table of contents as new topics appear (e.g. **messaging concurrency**: many chats per worker, many hires per gig).
 
+<a id="giggi-1-2"></a>
+
 ### 1.2 Documentation roles & UI voice
 
 * **Worker** and **client** are terms for **docs and code** (e.g. `worker_id`, `client_id` on an **agreement**). They describe **who is which side for that gig or agreement** — not a permanent user type. The same person can post one gig and take another.
@@ -71,6 +75,8 @@ Over time, this loop creates a reliable ecosystem where:
 * Legacy implementations may still use a column name such as `employer_id`; treat it as the **client** side of the agreement when reading older code or DBs.
 
 ---
+
+<a id="giggi-2"></a>
 
 ## 2. MVP Scope (Phase A - Minimal AI)
 
@@ -81,7 +87,7 @@ Over time, this loop creates a reliable ecosystem where:
 * Create / browse gigs
 * Messaging system
 * Agreement system (core trust layer)
-* Review system (double-sided, **double-blind in MVP as an experiment** — see §5.F)
+* Review system (double-sided, **double-blind in MVP as an experiment** — see [§5.F](#giggi-5-f))
 * Basic AI:
 
   * Search recommendation
@@ -96,6 +102,8 @@ Over time, this loop creates a reliable ecosystem where:
 * Recommendation engine
 
 ---
+
+<a id="giggi-3"></a>
 
 ## 3. Core Entities (Database Model)
 
@@ -123,6 +131,8 @@ Over time, this loop creates a reliable ecosystem where:
 
 ---
 
+<a id="giggi-3-gig"></a>
+
 ### Gig
 
 * id
@@ -137,7 +147,7 @@ Over time, this loop creates a reliable ecosystem where:
 * compensation_amount
 * **Optional (payment intent on listing):** `payment_timing_preference` (AFTER_COMPLETION | PARTIAL_UPFRONT_THEN_COMPLETION | FLEXIBLE_DISCUSS) — default suggestion **after completion**; `payment_method_preference` (CASH | MOBILE_OR_BANK | OTHER) and optional `payment_contact_hint` when a method needs a number/identifier (disclosure only; **no** in-app payments in MVP)
 * effort_level (QUICK | NORMAL | HEAVY)
-* urgency (NOW | TODAY | WEEK | FLEXIBLE) — see **[Urgency and intent modifiers (alignment)](#urgency-and-intent-modifiers-alignment)** for mapping to feed/posting intent
+* urgency (NOW | TODAY | WEEK | FLEXIBLE) — see **[Urgency and intent modifiers (alignment)](#giggi-urgency-alignment)** for mapping to feed/posting intent
 * expires_at
 * created_by
 
@@ -154,6 +164,8 @@ Over time, this loop creates a reliable ecosystem where:
 * **Concurrency:** the model must support **many concurrent conversations** per user (workers across gigs; **clients** with several candidates on one gig). Prefer a **thread / conversation id** (or equivalent) rather than implying a single channel per user pair — see [System rules — Messaging concurrency](docs/system-rules.md#messaging-concurrency).
 
 ---
+
+<a id="giggi-3-agreement"></a>
 
 ### Agreement (CRITICAL ENTITY)
 
@@ -174,6 +186,8 @@ Full UX options, field behaviour, and AI hints: [System rules — Payment timing
 
 ---
 
+<a id="giggi-3-review"></a>
+
 ### Review
 
 * id
@@ -189,6 +203,8 @@ Full UX options, field behaviour, and AI hints: [System rules — Payment timing
 * **MVP experiment fields (conceptual):** visibility to counterparty until **reveal**; **updated_at** while **editable until reveal**; **revealed_at**; **reveal_reason** (e.g. mutual | timeout); config for **timeout duration** (default **7 days**)
 
 ---
+
+<a id="giggi-3-dispute"></a>
 
 ### Dispute
 
@@ -214,6 +230,8 @@ Premium users:
 
 ---
 
+
+<a id="giggi-4"></a>
 
 ## 4. Category System
 
@@ -282,6 +300,8 @@ Flat, explicit categories:
 
 ---
 
+<a id="giggi-intent-modifiers"></a>
+
 ### Intent Modifiers (Core Differentiator)
 
 Each gig includes:
@@ -298,9 +318,11 @@ Each gig includes:
 ** Full day
 * location: ONSITE / REMOTE / WORKER_PLACE
 
+<a id="giggi-urgency-alignment"></a>
+
 ### Urgency and intent modifiers (alignment)
 
-The **Gig** entity stores `urgency` as **`NOW` | `TODAY` | `WEEK` | `FLEXIBLE`**. **[Intent Modifiers](#intent-modifiers-core-differentiator)** describe user-facing concepts (**ASAP**, **SCHEDULED**, **RECURRING**, **FLEXIBLE**). Feeds, chips, and posting must **not** invent divergent third enums — follow the tables below until the schema adds explicit fields for scheduled and recurring gigs.
+The **Gig** entity stores `urgency` as **`NOW` | `TODAY` | `WEEK` | `FLEXIBLE`**. **[Intent Modifiers](#giggi-intent-modifiers)** describe user-facing concepts (**ASAP**, **SCHEDULED**, **RECURRING**, **FLEXIBLE**). Feeds, chips, and posting must **not** invent divergent third enums — follow the tables below until the schema adds explicit fields for scheduled and recurring gigs.
 
 **Storage target (modifier → persisted shape)**
 
@@ -324,9 +346,13 @@ If product later decides **`TODAY` shares the ASAP chip** with `NOW`, state that
 
 ---
 
+<a id="giggi-5"></a>
+
 ## 5. User Flow
 
-**Canonical order and links:** the product spine and ordered journey files are in **§1.1**. The subsections below (A–G) are narrative summaries; detailed Mermaid lives in `docs/journeys/`—do not duplicate large diagrams here.
+**Canonical order and links:** the product spine and ordered journey files are in **[§1.1](#giggi-1-1)**. The subsections below (A–G) are narrative summaries; detailed Mermaid lives in `docs/journeys/`—do not duplicate large diagrams here.
+
+<a id="giggi-5-a"></a>
 
 ### A. Posting Flow
 
@@ -344,6 +370,8 @@ If product later decides **`TODAY` shares the ASAP chip** with `NOW`, state that
 
 ---
 
+<a id="giggi-5-b"></a>
+
 ### B. Discovery Flow
 
 * Search-first UI
@@ -356,6 +384,8 @@ If product later decides **`TODAY` shares the ASAP chip** with `NOW`, state that
 * **Optional MVP slice:** On **gig detail** only, an **OpenStreetMap**-based map (e.g. Leaflet or MapLibre) may show **that gig’s** location. There is **no** “all gigs on a map” experience in MVP.
 * **Phase B / later:** Broader map experiences (e.g. map + list for discovery) can be added if metrics justify it.
 
+<a id="giggi-5-location-ranking"></a>
+
 ### Location mode and match breadth (ranking)
 
 Discovery and ranking use this mental model (the **gig card** only reflects each gig’s own `location_type` and location data — it does not imply match quality):
@@ -366,6 +396,8 @@ Discovery and ranking use this mental model (the **gig card** only reflects each
 
 ---
 
+<a id="giggi-5-c"></a>
+
 ### C. Messaging Flow
 
 * Users communicate freely
@@ -374,6 +406,8 @@ Discovery and ranking use this mental model (the **gig card** only reflects each
 * **Parallelism:** workers may chat and pursue **many gigs at once**; a **client** (gig poster) may keep **multiple concurrent threads** on the **same gig** (several candidates) and may **hire multiple workers** for that gig via **separate agreements**. Inbox and gig surfaces must stay clear per thread — [System rules — Messaging concurrency](docs/system-rules.md#messaging-concurrency).
 
 ---
+
+<a id="giggi-5-d"></a>
 
 ### D. Agreement Flow (Core Trust System)
 
@@ -395,6 +429,8 @@ Discovery and ranking use this mental model (the **gig card** only reflects each
 
 ---
 
+<a id="giggi-5-e"></a>
+
 ### E. Completion Flow
 
 After the **agreed gig end time**, completion opens for **both** parties independently (**symmetric** — neither side is assumed to report first). Full diagram and rules: [Gig completion](docs/journeys/gig-completion.md). **At agreed start time**, no-show / attendance handling (grace, user input, signals, then opening completion) — [No-show flow](docs/journeys/no-show-flow.md).
@@ -407,6 +443,8 @@ After the **agreed gig end time**, completion opens for **both** parties indepen
 * Track **structured trust signals** separately from free-text feedback (worker/**client** no-show, cancellations by side) for reputation even when reviews are missing.
 
 ---
+
+<a id="giggi-5-f"></a>
 
 ### F. Review / feedback flow (Double-Blind — MVP experiment)
 
@@ -433,6 +471,8 @@ Use these metrics to decide whether to keep, tune, or simplify double-blind post
 
 ---
 
+<a id="giggi-5-g"></a>
+
 ### G. Re-engagement Flow
 
 On expiration:
@@ -442,6 +482,8 @@ On expiration:
   - save as template
 
 ---
+
+<a id="giggi-6"></a>
 
 ## 6. Structured Checklist System
 
@@ -471,6 +513,8 @@ Rules:
 
 ---
 
+<a id="giggi-7"></a>
+
 ## 7. Reputation System
 
 ### Worker metrics:
@@ -484,6 +528,8 @@ Rules:
 * fairness
 * cancellation rate
 * dispute rate
+
+<a id="giggi-7-1"></a>
 
 ### 7.1 MVP trust composite (reviews + behaviour + completion)
 
@@ -529,9 +575,11 @@ Clamp or re-normalise output to **\[0, 1\]** after summing if needed.
 * **Low activity:** no completed agreement in a long window (e.g. **90 days**) **or** very low `completionRate` with enough volume — config.
 * **Reliable:** `trustComposite` above a threshold **and** enough volume (e.g. **at least 5** locked agreements) **and** not dominated by high `noShowRate` / `cancellationRate`.
 
-Bad chips / risk states (e.g. high no-show) can be separate copy — align with [System rules — Soft disputes](docs/system-rules.md#soft-disputes) and moderation (§13).
+Bad chips / risk states (e.g. high no-show) can be separate copy — align with [System rules — Soft disputes](docs/system-rules.md#soft-disputes) and moderation ([§13](#giggi-13)).
 
 ---
+
+<a id="giggi-8"></a>
 
 ## 8. Identity System
 
@@ -569,6 +617,8 @@ Bad chips / risk states (e.g. high no-show) can be separate copy — align with 
 
 ---
 
+<a id="giggi-8-premium"></a>
+
 ### Premium (subscription layer)
 * Paid users
 ** access to featured gigs
@@ -578,6 +628,8 @@ Bad chips / risk states (e.g. high no-show) can be separate copy — align with 
 ** other premium features
 
 ---
+
+<a id="giggi-9"></a>
 
 ## 9. Expiration & Monetisation
 
@@ -610,6 +662,8 @@ Expiration is determined based on urgency and duration.
 * priority ranking
 
 ---
+
+<a id="giggi-10"></a>
 
 ## 10. AI Architecture (IMPORTANT)
 
@@ -655,6 +709,8 @@ AI_PROVIDER=openai
 
 ---
 
+<a id="giggi-11"></a>
+
 ## 11. AI Usage Rules
 
 * AI suggests → user confirms
@@ -665,6 +721,8 @@ AI_PROVIDER=openai
   * on agreement creation
 
 ---
+
+<a id="giggi-12"></a>
 
 ## 12. Cost Control Strategy
 
@@ -679,6 +737,8 @@ AI_PROVIDER=openai
 
 ---
 
+<a id="giggi-13"></a>
+
 ## 13. Safety & Moderation (MVP)
 
 * AI flags risky content
@@ -688,6 +748,8 @@ AI_PROVIDER=openai
 **Soft disputes** (completion mismatch, cancellation conflict, no-show disagreement): the platform **records** both sides’ input and **does not** manually resolve or assign blame in MVP; copy and data rules — [System rules — Soft disputes](docs/system-rules.md#soft-disputes).
 
 ---
+
+<a id="giggi-14"></a>
 
 ## 14. Cancellation System
 
@@ -704,6 +766,8 @@ Soft penalties (post-MVP / policy; **MVP** is signal-only per journey doc):
 * temporary posting cooldown
 
 ---
+
+<a id="giggi-15"></a>
 
 ## 15. Tech Stack Suggestion
 
@@ -725,6 +789,8 @@ Soft penalties (post-MVP / policy; **MVP** is signal-only per journey doc):
 
 ---
 
+<a id="giggi-16"></a>
+
 ## 16. Future Expansion (Phase B)
 
 * Payment / escrow system
@@ -743,6 +809,8 @@ Soft penalties (post-MVP / policy; **MVP** is signal-only per journey doc):
 
 ---
 
+<a id="giggi-18"></a>
+
 ## 18. Development Priority
 
 1. Authentication + user system
@@ -752,6 +820,8 @@ Soft penalties (post-MVP / policy; **MVP** is signal-only per journey doc):
 5. Review system
 6. AI integration (basic)
 7. Reputation scoring
+
+<a id="giggi-19"></a>
 
 ## 19. Homepage Feed & Ranking System
 
@@ -767,6 +837,8 @@ The system avoids simple sorting (e.g. “urgent first”) and instead uses a **
 
 ---
 
+<a id="giggi-19-interest"></a>
+
 ### MVP weighted interest score (contextual ranking)
 
 **Goal:** show the most **relevant** rows (**gigs** or **people**) for the **current user**, **page**, and **session context**. Everything below is **normalized to 0–1** per factor before weighting; **weights are config** (defaults are starting points).
@@ -776,10 +848,10 @@ The system avoids simple sorting (e.g. “urgent first”) and instead uses a **
 | Factor | Meaning (MVP) |
 | --- | --- |
 | **locationScore** | **Nearby → high**, **remote → medium**, **far → low** (viewer ↔ gig or viewer ↔ worker, per product rules). |
-| **urgencyScore** | **ASAP / equivalent → high**, **scheduled → medium**, **flexible → lower** (see [Urgency alignment](#urgency-and-intent-modifiers-alignment)). |
+| **urgencyScore** | **ASAP / equivalent → high**, **scheduled → medium**, **flexible → lower** (see [Urgency alignment](#giggi-urgency-alignment)). |
 | **freshnessScore** | **Time decay**: newer → higher, older → lower (`created_at` or equivalent). |
 | **categoryScore** | Match to **past behaviour** (implicit) and/or **current search / filter intent**. |
-| **trustScore** | **Ranking input** derived from **[§7.1](#71-mvp-trust-composite-reviews--behaviour--completion)** (`trustComposite` or a **monotone** map of it to \[0, 1\]) so higher-trust entities rank higher when this term applies. |
+| **trustScore** | **Ranking input** derived from **[§7.1](#giggi-7-1)** (`trustComposite` or a **monotone** map of it to \[0, 1\]) so higher-trust entities rank higher when this term applies. |
 | **engagementScore** | **Chats**, **saves**, and similar light signals (omit or renormalize when unknown — see [Cold start](#cold-start-zero-or-unknown-engagement) below). |
 | **keywordMatch** | **Search only**: textual / structured relevance to query. |
 | **responsiveness** | **Profile / worker lists** (e.g. reply latency, accept rate) — **MVP** may use **simple proxies** until real metrics exist; **TBD** in config. |
@@ -788,7 +860,7 @@ The system avoids simple sorting (e.g. “urgent first”) and instead uses a **
 
 | Context | Priority order (first = most influential) |
 | --- | --- |
-| **Gig feed** (discovery) | `location` → `urgency` → `freshness` → `category` → `trust` (and optionally **`engagement`** in the **Nearby & Relevant** blend per [Ranking blend](#ranking-blend-nearby--relevant) below). |
+| **Gig feed** (discovery) | `location` → `urgency` → `freshness` → `category` → `trust` (and optionally **`engagement`** in the **Nearby & Relevant** blend per [Ranking blend](#giggi-19-ranking-blend) below). |
 | **Profile list** (worker discovery) | `trust` → **category / skill fit** → **`responsiveness`** → `location` |
 | **Gig search** (intent-driven) | **`keywordMatch`** → `category` → `location` → `urgency` → `freshness` → `trust` |
 | **Worker search** (intent-driven) | **`keywordMatch`** → `category` → `trust` → `location` → `freshness` |
@@ -851,7 +923,7 @@ The homepage is divided into sections:
 
 #### ⚡ Urgent Now
 
-* Shows **ASAP-equivalent** gigs (see **[Urgency and intent modifiers (alignment)](#urgency-and-intent-modifiers-alignment)** — e.g. `urgency = NOW` on Gig until schema extends)
+* Shows **ASAP-equivalent** gigs (see **[Urgency and intent modifiers (alignment)](#giggi-urgency-alignment)** — e.g. `urgency = NOW` on Gig until schema extends)
 * Includes gigs **expiring soon** (per expiration rules)
 * Limited to a small number of items (e.g. 5–10)
 * Sorted by:
@@ -885,8 +957,8 @@ The homepage is divided into sections:
 #### 🔁 Flexible & Recurring
 
 * Longer-term opportunities; **lower time sensitivity** than the Urgent strip.
-* **Flexible:** `urgency = FLEXIBLE` on Gig (see §3 Gig and **[alignment](#urgency-and-intent-modifiers-alignment)**).
-* **Recurring:** use **[Intent Modifiers](#intent-modifiers-core-differentiator)** concept **RECURRING** — persist with **recurrence fields on Gig** (or extended `urgency` / enums) when added to §3; **do not** treat `urgency = RECURRING` as a Gig enum value until the schema explicitly defines it.
+* **Flexible:** `urgency = FLEXIBLE` on Gig (see §3 Gig and **[alignment](#giggi-urgency-alignment)**).
+* **Recurring:** use **[Intent Modifiers](#giggi-intent-modifiers)** concept **RECURRING** — persist with **recurrence fields on Gig** (or extended `urgency` / enums) when added to §3; **do not** treat `urgency = RECURRING` as a Gig enum value until the schema explicitly defines it.
 
 ---
 
@@ -902,6 +974,8 @@ The homepage is divided into sections:
 | **Flexible & Recurring** | **Filter** by eligibility (flexible + recurring per schema when ready); **mild** ordering (e.g. proximity or recency) — not the same blend as Nearby unless product explicitly reuses it. |
 
 ---
+
+<a id="giggi-19-ranking-blend"></a>
 
 ### Ranking blend (Nearby & Relevant)
 
@@ -1018,6 +1092,8 @@ To prevent imbalance:
 
 ---
 
+<a id="giggi-20"></a>
+
 ## 20. Dual-Sided UX (Find Help vs Find Work)
 
 ### Overview
@@ -1035,7 +1111,7 @@ Instead, it uses **intent-based context switching**.
 ### Core Principle
 
 > Users are not permanently “workers” or “clients” — the same person can do both.
-> The UI adapts to what they want to do at the moment, with **natural language** over rigid role labels ([§1.2](#12-documentation-roles--ui-voice)).
+> The UI adapts to what they want to do at the moment, with **natural language** over rigid role labels ([§1.2](#giggi-1-2)).
 
 ---
 
@@ -1131,6 +1207,8 @@ To support exploration without confusion:
 * does not dominate UI
 
 ---
+
+<a id="giggi-20-future-defaulting"></a>
 
 ### Smart Defaulting (Future)
 

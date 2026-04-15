@@ -1,6 +1,6 @@
 # No-show (at agreed start time)
 
-Handles **one or both parties not attending** at the agreed time, **without automatic detection in MVP**. Uses a **waiting / grace window**, then **user attestation** (and timeouts) that feeds the same **completion** outcomes—especially *Did not happen*—plus **trust signals**. Complements [Gig completion](gig-completion.md) (claims after agreed **end** time) and shared signals in [`../../giggi.md`](../../giggi.md) §5.E.
+Handles **one or both parties not attending** at the agreed time, **without automatic detection in MVP**. Uses a **waiting / grace window**, then **user attestation** (and timeouts) that feeds the same **completion** outcomes—especially *Did not happen*—plus **trust signals**. Complements [Gig completion](gig-completion.md) (claims after agreed **end** time) and shared signals in [`giggi.md` §5.E](../../giggi.md#giggi-5-e).
 
 ```mermaid
 flowchart TD
@@ -40,7 +40,7 @@ Track separately (for trust / reputation, not only star ratings):
 ## Behaviour (product policy)
 
 - No-show and related signals should affect **trust at least as much as** casual star ratings.
-- **Repeated** no-shows (especially worker-side for discovery) may **reduce visibility** in feed—**post-MVP** or behind flags unless already in scope ([`../../giggi.md`](../../giggi.md) §14).
+- **Repeated** no-shows (especially worker-side for discovery) may **reduce visibility** in feed—**post-MVP** or behind flags unless already in scope ([`giggi.md` §14](../../giggi.md#giggi-14)).
 
 ## Conflicting attendance stories
 

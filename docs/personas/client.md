@@ -1,6 +1,6 @@
 # Persona: Client / Geek Poster (posts gigs, hires workers) — documentation only
 
-In **docs and code**, **client** means the party who **posted the gig** and **initiates hire** for a given **agreement** context. It is **not** a permanent account label: the same person can act as a **worker** on another gig. See [Personas README](README.md) and [`../../giggi.md`](../../giggi.md) §1.2.
+In **docs and code**, **client** means the party who **posted the gig** and **initiates hire** for a given **agreement** context. It is **not** a permanent account label: the same person can act as a **worker** on another gig. See [Personas README](README.md) and [`giggi.md` §1.2](../../giggi.md#giggi-1-2).
 
 Someone who **needs work done**: publishes a listing, talks to workers (possibly several at once for one gig), sends **Hire**, negotiates the **agreement**, may **cancel**, participates in **completion** and **feedback**.
 
@@ -83,5 +83,5 @@ Someone who **needs work done**: publishes a listing, talks to workers (possibly
 
 ## Notes for design & eng
 
-- **Multiple chats per gig** and **multiple hires** mean inbox and gig detail must show **thread + agreement state** clearly ([messaging concurrency](../system-rules.md#messaging-concurrency), [`../../giggi.md`](../../giggi.md) §3 Agreement — many agreements per `gig_id`).
-- In agreement context, the **client** usually clicks **Hire** first; **UI strings** should still use **natural language** (names, “How was it working with…?”), not “your client” as a global role — see [`../../giggi.md`](../../giggi.md) §1.2 and [`../ui/README.md`](../ui/README.md).
+- **Multiple chats per gig** and **multiple hires** mean inbox and gig detail must show **thread + agreement state** clearly ([messaging concurrency](../system-rules.md#messaging-concurrency), [`giggi.md` §3 Agreement](../../giggi.md#giggi-3-agreement) — many agreements per `gig_id`).
+- In agreement context, the **client** usually clicks **Hire** first; **UI strings** should still use **natural language** (names, “How was it working with…?”), not “your client” as a global role — see [`giggi.md` §1.2](../../giggi.md#giggi-1-2) and [`../ui/README.md`](../ui/README.md).

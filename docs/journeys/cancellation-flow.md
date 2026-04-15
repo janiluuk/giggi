@@ -33,7 +33,7 @@ flowchart TD
 
 - Cancellation is allowed for **both** parties **any time before completion** (product may still restrict e.g. after work marked done—implementation detail).
 - Define **“late”** in config (e.g. **within 12–24h** before agreed start); **late** cancels weigh more heavily on **trust signals** than early ones.
-- **MVP:** no hard penalties (fees, bans)—**track behaviour** only; visibility/cooldowns can come later ([`../../giggi.md`](../../giggi.md) §14).
+- **MVP:** no hard penalties (fees, bans)—**track behaviour** only; visibility/cooldowns can come later ([`giggi.md` §14](../../giggi.md#giggi-14)).
 - **Notify** the non-cancelling party **immediately**.
 - **Optional feedback** after cancel may still run; align copy and eligibility with [Feedback flow](feedback-flow.md) (e.g. agreement ended without full performance).
 - **Cancellation reason** as structured or free text → **Phase B** unless trivial to add.

@@ -1,7 +1,7 @@
 # Feed list
 
 **Status:** Draft  
-**Related:** [`ui-system.md`](../../ui-system.md) §4, §12, §16; [Gig card](gig-card.md); [`../tokens.md`](../tokens.md); [`../screens/home.md`](../screens/home.md) (Home uses this list); [`../../giggi.md`](../../giggi.md) §5.B (discovery), §19 (Home ranking)
+**Related:** [`ui-system.md`](../../ui-system.md) §4, §12, §16; [Gig card](gig-card.md); [`../tokens.md`](../tokens.md); [`../screens/home.md`](../screens/home.md) (Home uses this list); [`giggi.md` §5.B](../../giggi.md#giggi-5-b) (discovery), [§19](../../giggi.md#giggi-19) (Home ranking)
 
 ## Purpose
 
@@ -22,7 +22,7 @@ The **list shell** (scroll, skeletons, empty/error, filters) is shared; **how it
 
 | Context | Ordering / relevance intent |
 | --- | --- |
-| **Home** | **Best match** (default **Best** sort) — shell, nav, and **sort strip**: [`screens/home.md`](../screens/home.md). Base ranking and §19 sections: [`giggi.md` §19](../../giggi.md). UI stays agnostic to exact weights. |
+| **Home** | **Best match** (default **Best** sort) — shell, nav, and **sort strip**: [`screens/home.md`](../screens/home.md). Base ranking and [§19](../../giggi.md#giggi-19) sections: [`giggi.md` §19](../../giggi.md#giggi-19). UI stays agnostic to exact weights. |
 | **Search** | **Relevance to query** (text + structured signals); may combine with light personalization later — contract stays “search owns ranking.” |
 | **Favorites / saved** | **Latest first** among **still-active** gigs (exclude expired / closed per product rules); user expects recency, not match score. |
 | **Other feeds** | Each screen documents its own contract (e.g. “posted by me”, category browse) in product docs and passes it into the list. |

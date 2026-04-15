@@ -2,7 +2,7 @@
 
 **Status:** Draft
 
-**Related:** [`ui-system.md`](../../ui-system.md) §4–5, §8, §14–16; [`tokens.md`](../tokens.md); [`giggi.md`](../../giggi.md) §3 Gig, §5.B (discovery), §8 (identity / premium)
+**Related:** [`ui-system.md`](../../ui-system.md) §4–5, §8, §14–16; [`tokens.md`](../tokens.md); [`giggi.md` §3 Gig](../../giggi.md#giggi-3-gig), [§5.B](../../giggi.md#giggi-5-b) (discovery), [§8](../../giggi.md#giggi-8) (identity / [premium](../../giggi.md#giggi-8-premium))
 
 ## Purpose
 
@@ -19,7 +19,7 @@ Chip row: always + conditional chips (may wrap to a second line)
 
 Title — full text, may wrap to multiple lines (no ellipsis truncation)
 
-Meta: gig location · duration/date · compensation (see giggi.md §3)
+Meta: gig location · duration/date · compensation (see [`giggi.md` §3 Gig](../../giggi.md#giggi-3-gig))
 
 Optional body snippet (description — truncated; see Truncation)
 
@@ -38,12 +38,12 @@ In a **[feed list](feed-list.md)** layout, the gig row has **no** elevated surfa
 * **Always show** (when the gig has the underlying data):
 
   * **Deepest matched category** (e.g. `Deep cleaning`)
-  * **Urgency / time intent** derived from product fields using the **canonical mapping** in [`giggi.md` “Urgency and intent modifiers (alignment)”](../../giggi.md#urgency-and-intent-modifiers-alignment) (single source of truth; avoids forked chip enums)
+  * **Urgency / time intent** derived from product fields using the **canonical mapping** in [`giggi.md` “Urgency and intent modifiers (alignment)”](../../giggi.md#giggi-urgency-alignment) (single source of truth; avoids forked chip enums)
 * **Conditional** (only when rules fire; exact thresholds TBD in product/engineering):
 
-  * **Expires soon** (vs `expires_at` and urgency rules in [`giggi.md`](../../giggi.md) §9)
+  * **Expires soon** (vs `expires_at` and urgency rules in [`giggi.md` §9](../../giggi.md#giggi-9))
   * **Just created** (short age window after `created_at`)
-  * **Featured** / **Boosted** (or equivalent) for **paid / premium** visibility where the product exposes it ([`giggi.md`](../../giggi.md) §8 Premium, §9 as relevant)
+  * **Featured** / **Boosted** (or equivalent) for **paid / premium** visibility where the product exposes it ([`giggi.md` §8 Premium](../../giggi.md#giggi-8-premium), [§9](../../giggi.md#giggi-9) as relevant)
   * Other freshness or state chips as the product adds them
 * **Reading order (LTR):** category → urgency / time intent → time-sensitive freshness (`Expires soon`, `Just created`, …) → promotional (`Featured`, …). Keep **text on every chip** (no color-only meaning; [`ui-system.md`](../../ui-system.md) §8, §14).
 * **Layout:** chips live in one **chip row**; the row **may wrap** to avoid overflow. If a soft cap is needed later (clutter on narrow screens), define it in implementation and document here.
@@ -54,11 +54,11 @@ In a **[feed list](feed-list.md)** layout, the gig row has **no** elevated surfa
 
 ### Compensation (display)
 
-Follow **[`giggi.md`](../../giggi.md) §3 Gig**: `compensation_type` (`FIXED` | `HOURLY` | `NEGOTIABLE`) and `compensation_amount` where applicable — e.g. fixed **€X**, hourly with amount or range, **Negotiable**, etc. Exact strings and formatting stay aligned with product copy rules in `giggi.md`.
+Follow **[`giggi.md` §3 Gig](../../giggi.md#giggi-3-gig)**: `compensation_type` (`FIXED` | `HOURLY` | `NEGOTIABLE`) and `compensation_amount` where applicable — e.g. fixed **€X**, hourly with amount or range, **Negotiable**, etc. Exact strings and formatting stay aligned with product copy rules in `giggi.md`.
 
 ### Payment timing & method (when present on gig)
 
-If the gig has optional **`payment_timing_preference`** / **`payment_method_preference`** (see [`giggi.md`](../../giggi.md) §3 and [System rules — Payment timing](../../system-rules.md#payment-timing)):
+If the gig has optional **`payment_timing_preference`** / **`payment_method_preference`** (see [`giggi.md` §3](../../giggi.md#giggi-3) and [System rules — Payment timing](../../system-rules.md#payment-timing)):
 
 * Show **short, scannable** labels on the meta line or secondary row (e.g. “After job · Cash”, “Pay in chat”), not long policy text.
 * **Do not** show phone/account numbers on the card; those stay for agreement or post-match surfaces per privacy rules.
@@ -72,7 +72,7 @@ If the gig has optional **`payment_timing_preference`** / **`payment_method_pref
   * `At worker’s place`
   * area/neighbourhood for on-site gigs
 
-*How strongly a gig matches a viewer* is a **ranking** concern, not card copy; see [`giggi.md` §5.B “Location mode and match breadth (ranking)”](../../giggi.md#location-mode-and-match-breadth-ranking).
+*How strongly a gig matches a viewer* is a **ranking** concern, not card copy; see [`giggi.md` §5.B “Location mode and match breadth (ranking)”](../../giggi.md#giggi-5-location-ranking).
 
 ### Image handling
 
@@ -87,7 +87,7 @@ If the gig has optional **`payment_timing_preference`** / **`payment_method_pref
 
 ### Tier rules
 
-* **Tier 1 / Tier 2:** follow visibility rules in product spec ([`giggi.md`](../../giggi.md) §8)
+* **Tier 1 / Tier 2:** follow visibility rules in product spec ([`giggi.md` §8](../../giggi.md#giggi-8))
 * No phone or full identity on card unless allowed later
 
 ### Footer actions
@@ -130,7 +130,7 @@ What the row **is**, driven by gig data (not loading/error chrome).
 | Remote / at worker’s place / on-site | Location mode and copy explicit in meta (or equivalent); on-site uses area/neighbourhood per data |
 | Urgent / scheduled / recurring / flexible | Reflected in **urgency / time intent** chip(s) and meta, not color-only |
 | With / without image | Image block only when an image exists |
-| Tier 1 / Tier 2 (and future tiers) | Trust row and chips per [`giggi.md`](../../giggi.md) §8 |
+| Tier 1 / Tier 2 (and future tiers) | Trust row and chips per [`giggi.md` §8](../../giggi.md#giggi-8) |
 | Featured / boosted (when applicable) | Conditional chip + any visual accent still paired with **text** |
 
 ### UI states
@@ -155,7 +155,7 @@ What the row **is**, driven by gig data (not loading/error chrome).
 * [ ] Deepest category visible (chip)
 * [ ] Urgency / time intent chip present when data supports it
 * [ ] Conditional chips (expires soon, just created, featured, …) only when rules say so
-* [ ] Meta line readable at a glance; compensation matches `giggi.md` §3 patterns
+* [ ] Meta line readable at a glance; compensation matches [`giggi.md` §3 Gig](../../giggi.md#giggi-3-gig) patterns
 * [ ] If gig has payment timing/method preferences: short labels only; no phone/account on card ([System rules — Payment timing](../../system-rules.md#payment-timing))
 * [ ] Full title visible (multi-line OK); snippet never ugly mid-word/mid-sentence
 * [ ] Works without image

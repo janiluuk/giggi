@@ -1,6 +1,6 @@
 # Agreement negotiation
 
-Versioned back-and-forth after **Hire** produces a draft ([Browse → hire](browse-to-hire.md)), until both parties accept the **same** version or negotiation ends. Continues the narrative in [`../../giggi.md`](../../giggi.md) §5.D. **Client** = gig poster in doc/code terms ([`../../giggi.md`](../../giggi.md) §1.2).
+Versioned back-and-forth after **Hire** produces a draft ([Browse → hire](browse-to-hire.md)), until both parties accept the **same** version or negotiation ends. Continues the narrative in [`giggi.md` §5.D](../../giggi.md#giggi-5-d). **Client** = gig poster in doc/code terms ([`giggi.md` §1.2](../../giggi.md#giggi-1-2)).
 
 ```mermaid
 flowchart TD
