@@ -1,6 +1,6 @@
 # UI specs & style book index
 
-This folder holds **implementable** UI detail: tokens, per-component requirements, and verification notes. Principles and product-wide rules stay in [`../ui-system.md`](../ui-system.md).
+This folder holds **implementable** UI detail: tokens, per-component requirements, and verification notes. Principles and product-wide rules stay in [`../ui-system.md`](../ui-system.md). End-to-end user paths (auth, routing) are charted in [`../journeys/`](../journeys/).
 
 ## Contents
 

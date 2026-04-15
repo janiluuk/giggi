@@ -13,6 +13,47 @@ Core principle:
 
 > Structured UI + Open marketplace + AI-assisted workflows
 
+### 1.1 Product backbone (vision and journey sequence)
+
+**Synopsis.** Employers **create** gigs; workers **browse**, enter conversations, and **get hired** through explicit agreements tied to real work. **Trust** compounds from **honest signals**—two-sided completion claims, structured behavioural markers (no-shows, cancellations), and **feedback** whose **visibility and timing the system controls** so neither side can easily steamroll the other. **Every other feature** (search, ranking, categories, AI drafting, verification, notifications, maps, and so on) exists to **support this spine**, not to replace it.
+
+This product is built around a simple, repeatable loop:
+- Employers create gigs
+- Workers browse and engage
+- Agreements are formed and completed
+- Both parties provide feedback
+
+Trust is not assumed — it is **systematically built** through structured agreements and controlled, fair feedback.
+
+The platform ensures that:
+- both parties have equal voice in outcomes
+- feedback is collected and revealed fairly
+- system signals (completion status, no-shows, cancellations) support honest evaluation
+
+Every feature in the product exists to support this core flow:
+**create → match → agree → complete → review → build trust**
+
+Over time, this loop creates a reliable ecosystem where:
+- good actors are rewarded
+- poor behavior is surfaced
+- decisions become faster and safer for everyone
+
+---
+
+> The goal is not just to connect people, but to **enable trustworthy, repeatable transactions with minimal friction**.
+
+**Journey diagrams** (read in this order; each file is the implementable navigation story for that leg):
+
+1. [Home → browse → chat](docs/journeys/home-to-chat.md) — App entry, signed-out vs curated home, browse, chat auth gate.
+2. [Browse → create ad](docs/journeys/browse-to-create-ad.md) — Search/browse, worker-focused results, prompt into create ad, sign-in, high-level create path.
+3. [Gig creation](docs/journeys/gig-creation.md) — Start create gig, creation source, AI parse, pre-fill, required fields, publish.
+4. [Browse → hire](docs/journeys/browse-to-hire.md) — Worker vs employer entry into gig-context chat; Hire → agreement draft.
+5. [Agreement negotiation](docs/journeys/agreement-negotiation.md) — Versioned draft, accept / edit / resend / reject, expiry rules, lock when both accept the same version.
+6. [Gig completion](docs/journeys/gig-completion.md) — After agreed end time: independent completion claims, match or mismatch, response window, then hand off to feedback.
+7. [Feedback flow](docs/journeys/feedback-flow.md) — Required stars, optional text and dimensions, reveal rules, edit until publish.
+
+[Index of journey files](docs/journeys/README.md). Add new charts under `docs/journeys/` and extend the list above when the backbone gains a new leg.
+
 ---
 
 ## 2. MVP Scope (Phase A - Minimal AI)
@@ -263,6 +304,8 @@ If product later decides **`TODAY` shares the ASAP chip** with `NOW`, state that
 
 ## 5. User Flow
 
+**Canonical order and links:** the product spine and ordered journey files are in **§1.1**. The subsections below (A–G) are narrative summaries; detailed Mermaid lives in `docs/journeys/`—do not duplicate large diagrams here.
+
 ### A. Posting Flow
 
 1. User types free text:
@@ -328,28 +371,29 @@ Discovery and ranking use this mental model (the **gig card** only reflects each
 
 ### E. Completion Flow
 
-After job:
+After the **agreed gig end time**, completion opens for **both** parties independently (not employer-first). Full diagram and rules: [Gig completion](docs/journeys/gig-completion.md).
 
-* Employer selects:
-
-  * completed
-  * minor issues
-  * not completed
-
-* Worker confirms or disputes
+* Each side picks one of: **completed as agreed** · **partially completed** · **did not happen** (human wording in UI).
+* **Both match** on the same tier → system adopts that outcome.
+* **Disagree** → flag **mismatch / disputed** outcome.
+* **Response window** ends with only one submission → store **one-sided** outcome; other side **no response**.
+* **Neither** submits → **unconfirmed**.
+* Track **structured trust signals** separately from free-text feedback (worker/employer no-show, cancellations by side) for reputation even when reviews are missing.
 
 ---
 
-### F. Review Flow (Double-Blind — MVP experiment)
+### F. Review / feedback flow (Double-Blind — MVP experiment)
+
+Experience ratings after completion: form, optional dimensions, reveal timing, and copy rules — [Feedback flow](docs/journeys/feedback-flow.md). **Completion** answers *what happened*; **feedback** answers *how it was* (including limited wording when the gig **did not happen**).
 
 Double-blind reviews ship **early in MVP** as a **deliberate experiment**, not as a final, frozen policy. Implementation should use **feature flags / config** so timeouts and rules can change as we learn.
 
 **MVP behavior**
 
-* After an agreement is **eligible for review** (per completion rules), each party may **submit** a review; the **counterparty cannot see** the other’s review text or ratings until **reveal**.
+* After an agreement is **eligible for review** (per completion rules), each party may **submit** feedback; the **counterparty cannot see** the other’s text or star ratings until **reveal** (see journey doc for mutual vs one-sided paths).
 * **Immediate reveal** when **both** parties have submitted.
-* **Auto-reveal after 7 days** if both reviews are not yet in (timeout path); define the **start of the 7-day window** in implementation (e.g. from agreement completion or from first submission) and document it consistently.
-* Reviews remain **editable by the author until reveal**; after reveal, they are **locked** (except any future admin/dispute tooling in later phases).
+* **Timeout reveal:** the journey doc uses **3 days** for auto-publish of **one-sided** feedback when the other party never submits; **§5.F historically used 7 days** for “both not yet in” double-blind — **reconcile to one clock** (or separate named timers) in config before ship.
+* Feedback remains **editable by the author until publish**; after publish, it is **locked** (except any future admin/dispute tooling in later phases).
 
 **Evaluation metrics (instrument from day one)**
 
