@@ -79,20 +79,20 @@ These execution decisions are now locked into the roadmap.
 
 ## Phase 0 — Project foundation
 
-**Status:** `PLANNED`
+**Status:** `IN_PROGRESS`
 
 Goal: repo, tooling, environments, and conventions so later phases plug in cleanly.
 
 | Step | Description | Status |
 | ---- | ----------- | ------ |
-| 0.1 | Initialize repo for the chosen Phase A stack: **Next.js app/backend** plus shared packages for types, API contracts, and domain logic. | `PLANNED` |
-| 0.2 | TypeScript, lint, format, test runner; pre-commit optional. | `PLANNED` |
-| 0.3 | Environment config pattern (`AI_PROVIDER=ollama`, DB URLs, OAuth secrets, cluster deploy secrets) — no secrets in repo. | `PLANNED` |
-| 0.4 | Docker Compose (or equivalent): PostgreSQL + Redis for local dev. | `PLANNED` |
-| 0.5 | Database migration tool (e.g. Prisma, Drizzle, TypeORM) aligned with the chosen Next.js stack and deployment model. | `PLANNED` |
+| 0.1 | Initialize repo for the chosen Phase A stack: **Next.js app/backend** plus shared packages for types, API contracts, and domain logic. | `IN_PROGRESS` |
+| 0.2 | TypeScript, lint, format, test runner; pre-commit optional. | `DONE` |
+| 0.3 | Environment config pattern (`AI_PROVIDER=ollama`, DB URLs, OAuth secrets, cluster deploy secrets) — no secrets in repo. | `DONE` |
+| 0.4 | Docker Compose (or equivalent): PostgreSQL + Redis for local dev. | `DONE` |
+| 0.5 | Database migration tool (e.g. Prisma, Drizzle, TypeORM) aligned with the chosen Next.js stack and deployment model. | `DONE` |
 | 0.6 | GitHub Actions baseline CI: lint, typecheck, unit tests on PR + push; cache dependencies and test artifacts. | `PLANNED` |
 | 0.7 | Add workflow jobs for integration/E2E and **Playwright visual regression** checks, including artifact upload for failed runs. | `PLANNED` |
-| 0.8 | Establish screenshot conventions: path (`docs/screenshots/phase-<n>/...`), naming, Playwright baseline refresh process, and PR checklist. | `PLANNED` |
+| 0.8 | Establish screenshot conventions: path (`docs/screenshots/phase-<n>/...`), naming, Playwright baseline refresh process, and PR checklist. | `DONE` |
 | 0.9 | Initialize **React Native** app projects for iOS and Android with shared API/domain packages and env-configurable API/base URLs. | `PLANNED` |
 | 0.10 | Add separate GitHub Actions build workflows/jobs for `web`, `ios`, and `android`; publish artifacts independently per platform. | `PLANNED` |
 | 0.11 | Define mobile signing/config secrets strategy for **self-signed/internal builds** first (bundle IDs, provisioning profiles, Android keystore) for CI/CD readiness. | `PLANNED` |
@@ -102,22 +102,22 @@ Goal: repo, tooling, environments, and conventions so later phases plug in clean
 
 ## Phase 1 — Authentication & user system
 
-**Status:** `PLANNED`
+**Status:** `IN_PROGRESS`
 Maps to [`giggi.md` §18 item 1](giggi.md#giggi-18), entities **User** / **Profile** ([§3](giggi.md#giggi-3)), identity **Tier 1–2** ([§8](giggi.md#giggi-8)).
 
 | Step | Description | Status |
 | ---- | ----------- | ------ |
-| 1.1 | PostgreSQL schema: `users` (id, nickname, email, phone, flags, rating aggregates placeholder, cancellation fields, timestamps). | `PLANNED` |
-| 1.2 | Schema: `profiles` (user_id, bio, skills, resume_data JSON, visibility_level). | `PLANNED` |
-| 1.3 | Email + password auth **or** magic link — confirm product preference **(DECISION)** if not specified in giggi. | `PLANNED` |
-| 1.4 | Google OAuth integration only for Phase A; keep provider abstraction ready for later expansion. | `PLANNED` |
-| 1.5 | Session/JWT strategy; secure cookies if web; CSRF where applicable. | `PLANNED` |
-| 1.6 | Phone verification flow (Finland-first): send code, verify, set `is_phone_verified`, **Tier 2** capabilities flag; keep SMS provider behind a swap-friendly adapter/config boundary. | `PLANNED` |
-| 1.7 | API: register, login, logout, current user, profile CRUD. | `PLANNED` |
+| 1.1 | PostgreSQL schema: `users` (id, nickname, email, phone, flags, rating aggregates placeholder, cancellation fields, timestamps). | `DONE` |
+| 1.2 | Schema: `profiles` (user_id, bio, skills, resume_data JSON, visibility_level). | `DONE` |
+| 1.3 | Email + password auth **or** magic link — confirm product preference **(DECISION)** if not specified in giggi. | `DONE` |
+| 1.4 | Google OAuth integration only for Phase A; keep provider abstraction ready for later expansion. | `IN_PROGRESS` |
+| 1.5 | Session/JWT strategy; secure cookies if web; CSRF where applicable. | `DONE` |
+| 1.6 | Phone verification flow (Finland-first): send code, verify, set `is_phone_verified`, **Tier 2** capabilities flag; keep SMS provider behind a swap-friendly adapter/config boundary. | `DONE` |
+| 1.7 | API: register, login, logout, current user, profile CRUD. | `DONE` |
 | 1.8 | Enforce **Tier 1 vs Tier 2** rules on endpoints (browse/message/post limits, sensitive categories blocked for Tier 1) per [§8](giggi.md#giggi-8). | `PLANNED` |
-| 1.9 | Frontend: auth screens, profile basics, verification UI. | `PLANNED` |
-| 1.10 | Tests: auth/session security cases, tier-gated endpoint access, phone verification success/failure paths. | `PLANNED` |
-| 1.11 | Screenshots: sign-in, sign-up, phone verification, and profile basics states (idle/error/success). | `PLANNED` |
+| 1.9 | Frontend: auth screens, profile basics, verification UI. | `DONE` |
+| 1.10 | Tests: auth/session security cases, tier-gated endpoint access, phone verification success/failure paths. | `DONE` |
+| 1.11 | Screenshots: sign-in, sign-up, phone verification, and profile basics states (idle/error/success). | `DONE` |
 
 ---
 
