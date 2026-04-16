@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum VisibilityLevel {
+  PUBLIC
+  HIDDEN
+}
+
+model User {
+  id              String   @id @default(cuid())
+  // NextAuth expects `name`/`emailVerified`/`image` on the User model.
+  name            String?
+  emailVerified   DateTime?
+  image           String?
+
+  nickname        String?
+  email           String   @unique
+  phone           String?
+  isPhoneVerified Boolean  @default(false)
+  passwordHash    String?
+
+  ratingAverage   Float?
+  ratingCount     Int      @default(0)
+  cancellationRate Float?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  profile         Profile?
+  accounts        Account[]
+  sessions        Session[]
+  phoneCodes      PhoneVerificationCode[]
+}
+
+model Profile {
+  userId          String          @id
+  bio             String?
+  skills          String[]        @default([])
+  resumeData      Json?
+  visibilityLevel VisibilityLevel @default(PUBLIC)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PhoneVerificationCode {
+  id        String   @id @default(cuid())
+  userId    String
+  phone     String
+  codeHash  String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([phone])
+}
+
+// NextAuth (Auth.js) Prisma schema
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
